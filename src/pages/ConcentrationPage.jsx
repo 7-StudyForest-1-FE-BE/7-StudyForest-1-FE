@@ -20,31 +20,33 @@ function ConcentrationPage() {
   return (
     <div className="concentration">
       <div className="concentration__container">
-        {/* 상단 헤더 섹션 */}
         <div className="concentration__header">
-          <div className="concentration__header-left">
-            <h1 className="concentration__site-title">연우의 개발공장</h1>
-            <p className="concentration__site-subtitle">
-              현재까지 획득한 포인트
-            </p>
-            <div className="concentration__site-tag">310P 획득</div>
+          <div className="header__title">
+            <h1 className="title__txt">연우의 개발공장</h1>
+            <div className="button">
+              <button className="habit__btn">오늘의 습관 ›</button>
+              <button className="home__btn">홈 ›</button>
+            </div>
           </div>
-          <div className="concentration__header-right">
-            <button className="concentration__header-btn">오늘의 습관 ›</button>
-            <button className="concentration__header-btn">홈 ›</button>
+          <div className="header__sub-title">
+            <h2 className="point">현재까지 획득한 포인트</h2>
+            <div className="point__num">310P 획득</div>
           </div>
         </div>
-
-        {/* 타이머 섹션 */}
         <div className="concentration__timer-section">
-          <h2 className="concentration__timer-title">오늘의 집중</h2>
-
-          <div className="concentration__timer">
-            <div className="concentration__time">{formatTime(time)}</div>
-
-            <button className="concentration__start-btn" onClick={handleStart}>
-              ▶ Start!
-            </button>
+          <div className="timer__container">
+            <div className="timer__title">
+              <h2 className="timer__title-text">오늘의 집중</h2>
+            </div>
+            <div className="concentration__timer">
+              <div className="concentration__time">{formatTime(time)}</div>
+              <button
+                className="concentration__start-btn"
+                onClick={handleStart}
+              >
+                ▶ Start!
+              </button>
+            </div>
           </div>
         </div>
       </div>
