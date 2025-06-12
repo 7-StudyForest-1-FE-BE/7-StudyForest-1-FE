@@ -1,0 +1,92 @@
+.container {
+  max-width: 696px;
+  min-height: 1171px;
+  background-color: #fff;
+  border-radius: 16px;
+  margin: 0px auto 40px auto;
+  padding: 16px 8px;
+}
+
+.study__create,
+.nick__name,
+.study__name,
+.introduction,
+/* .choice__background, */
+.password,
+.password__check {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+input {
+  max-width: 648px;
+  height: 48px;
+  border-radius: 16px;
+  border: 1px solid #dddddd;
+  padding-left: 20px;
+}
+
+textarea {
+  max-width: 648px;
+  height: 98px;
+  border-radius: 16px;
+  border: 1px solid #dddddd;
+  padding-left: 20px;
+  padding-top: 15px;
+  resize: none;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 24px;
+}
+
+.study__create {
+  gap: 24px;
+}
+
+.choice__background {
+  display: flex;
+  flex-direction: column;
+}
+
+.background__items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.background__item {
+  width: 150px;
+  height: 150px;
+  border-radius: 16px;
+  padding: 16px 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.submit__btn {
+  display: flex;
+  justify-content: center;
+}
+
+.study__create__btn {
+  cursor: pointer;
+  background-color: #99c08e;
+  width: 648px;
+  height: 58px;
+  padding: 16px 8px;
+  border-radius: 16px;
+  border: 0px;
+  font-size: 18px;
+  font-weight: 400;
+  color: #fff;
+}
