@@ -1,0 +1,140 @@
+.concentration {
+  min-height: calc(100vh - 80px);
+  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 상단 헤더 섹션 */
+.concentration__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px 40px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.concentration__header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.concentration__site-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.concentration__site-subtitle {
+  font-size: 14px;
+  color: #6c757d;
+  margin: 0;
+}
+
+.concentration__site-tag {
+  display: inline-flex;
+  align-items: center;
+  background-color: #e8f5e8;
+  color: #2d5a2d;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 12px;
+  margin-top: 8px;
+  width: fit-content;
+}
+
+.concentration__header-right {
+  display: flex;
+  gap: 12px;
+}
+
+.concentration__header-btn {
+  background: none;
+  border: none;
+  color: #6c757d;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.concentration__header-btn:hover {
+  background-color: #f8f9fa;
+  color: #495057;
+}
+
+/* 타이머 섹션 */
+.concentration__timer-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.concentration__timer-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 60px;
+  text-align: center;
+}
+
+.concentration__timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.concentration__time {
+  font-size: 72px;
+  font-weight: 700;
+  color: #2c3e50;
+  font-family: "Arial", sans-serif;
+  letter-spacing: -2px;
+}
+
+.concentration__start-btn {
+  background-color: #90c695;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 32px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  min-width: 120px;
+}
+
+.concentration__start-btn:hover {
+  background-color: #7bb67f;
+}
+
+.concentration__start-btn:active {
+  transform: translateY(1px);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .concentration__header {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 20px;
+  }
+
+  .concentration__header-right {
+    align-self: flex-end;
+  }
+
+  .concentration__time {
+    font-size: 56px;
+  }
+}
