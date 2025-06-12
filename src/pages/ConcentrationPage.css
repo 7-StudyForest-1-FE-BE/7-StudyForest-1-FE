@@ -1,0 +1,398 @@
+.concentration {
+  width: 100%;
+  height: 100%;
+  background-color: #f6f4ef;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.concentration__container {
+  display: flex;
+  margin-top: 39px;
+  width: 1248px;
+  height: 774px;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 20px;
+  background: #fff;
+}
+
+/* 상단 헤더 섹션 */
+.concentration__header {
+  display: flex;
+  width: 1168px;
+  margin: 40px 40px auto;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header__title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title__txt {
+  font-size: 32px;
+  font-weight: 800;
+  color: #414141;
+  font-style: normal;
+  line-height: normal;
+}
+
+.button {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.habit__btn {
+  width: 144px;
+  height: 48px;
+  flex-shrink: 0;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  border-radius: 15px;
+  text-align: center;
+  color: #818181;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.home__btn {
+  width: 82px;
+  height: 48px;
+  flex-shrink: 0;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  border-radius: 15px;
+  text-align: center;
+  color: #818181;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.arrow__icon {
+  display: inline-flex;
+}
+
+.header__sub-title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.point {
+  color: #818181;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.point__tag {
+  display: flex;
+  align-items: center;
+  padding: auto 12px;
+  gap: 4px;
+  border-radius: 50px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.point__icon {
+  display: flex;
+  width: 19px;
+  height: 19px;
+  padding: 0.226px 1.336px;
+  justify-content: center;
+  align-items: center;
+}
+
+.point__text {
+  display: flex;
+  width: 80px;
+  height: 31px;
+  justify-content: flex-start;
+  align-items: center;
+  color: #414141;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.concentration__site-tag {
+  display: inline-flex;
+  align-items: center;
+  background-color: #e8f5e8;
+  color: #2d5a2d;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 12px;
+  margin-top: 8px;
+  width: fit-content;
+}
+
+/* 타이머 섹션 */
+.concentration__timer-section {
+  display: flex;
+  height: 546px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 24px;
+  margin: auto 40px 40px;
+  gap: 10px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  background: #fff;
+}
+
+.timer__container {
+  display: flex;
+  height: 465px;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.timer__title {
+  display: flex;
+  width: 1120px;
+  height: 29px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  margin-bottom: 100px;
+}
+
+.timer__title-text {
+  color: #414141;
+  text-align: right;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+}
+
+.concentration__timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 94px;
+}
+
+.concentration__time {
+  font-size: 150px;
+  font-weight: 800;
+  color: #414141;
+  font-style: normal;
+  text-align: center;
+}
+
+.concentration__start-btn {
+  background-color: #99c08e;
+  color: #ffffff;
+  width: 333px;
+  height: 60px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 32px;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  min-width: 120px;
+}
+
+.concentration__start-btn:hover {
+  background-color: #7bb67f;
+}
+
+/* 태블릿 화면 (1199px 이하) - Header 스타일과 맞춤 */
+@media (max-width: 1199px) {
+  .concentration__container {
+    max-width: 100%;
+    width: calc(100% - 48px);
+    margin: 24px;
+    height: auto;
+  }
+
+  .concentration__header {
+    width: calc(100% - 48px);
+    margin: 24px 24px 0;
+  }
+
+  .title__txt {
+    font-size: 28px;
+  }
+
+  .habit__btn {
+    width: 160px;
+    height: 48px;
+    border-radius: 14px;
+    font-size: 16px;
+  }
+
+  .home__btn {
+    width: 82px;
+    height: 48px;
+    border-radius: 14px;
+    font-size: 16px;
+  }
+
+  .concentration__timer-section {
+    margin: 24px 24px;
+    padding: 40px 24px;
+    height: auto;
+  }
+
+  .timer__container {
+    height: auto;
+  }
+
+  .timer__title {
+    width: 100%;
+    margin-bottom: 80px;
+  }
+
+  .timer__title-text {
+    font-size: 22px;
+  }
+
+  .concentration__time {
+    font-size: 120px;
+  }
+
+  .concentration__start-btn {
+    width: 280px;
+    height: 55px;
+    font-size: 24px;
+    border-radius: 25px;
+  }
+
+  .concentration__timer {
+    gap: 80px;
+  }
+}
+
+/* 모바일 화면 (743px 이하) - Header 스타일과 맞춤 */
+@media (max-width: 743px) {
+  .concentration__container {
+    width: calc(100% - 32px);
+    margin: 16px;
+  }
+
+  .concentration__header {
+    width: calc(100% - 32px);
+    margin: 16px 16px 0;
+  }
+
+  .header__title {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .title__txt {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .button {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  .habit__btn {
+    width: 106px;
+    height: 38px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+
+  .home__btn {
+    width: 58px;
+    height: 38px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+
+  .header__sub-title {
+    align-items: flex-start;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .point {
+    font-size: 14px;
+  }
+
+  .point__tag {
+    padding: 4px 8px;
+  }
+
+  .point__text {
+    font-size: 12px;
+    width: 60px;
+    height: 20px;
+  }
+
+  .point__icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .concentration__timer-section {
+    margin: 16px 16px;
+    padding: 24px 16px;
+  }
+
+  .timer__title {
+    margin-bottom: 40px;
+  }
+
+  .timer__title-text {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .concentration__time {
+    font-size: 72px;
+    font-weight: 700;
+  }
+
+  .concentration__start-btn {
+    width: 200px;
+    height: 48px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 24px;
+  }
+
+  .concentration__timer {
+    gap: 32px;
+  }
+
+  .play__icon {
+    width: 14px;
+    height: 14px;
+  }
+}
