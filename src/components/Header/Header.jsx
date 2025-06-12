@@ -13,11 +13,11 @@ function Header() {
             </Link>
           </h1>
         </div>
-        <div className={styles.util}>
+        {/*<div className={styles.util}>
           <Link to={"/registration"} className={styles.btn}>
             스터디 만들기
           </Link>
-        </div>
+        </div>*/}
       </div>
     </header>
   );

@@ -1,7 +1,7 @@
 import Header from "./components/Header/Header";
 import "./styles/reset.css";
 import "./styles/global.css";
-import ConcentrationPage from "./pages/ConcentrationPage";
+import ConcentrationPage from "./pages/ConcentrationPage.jsx";
 
 function App({ children }) {
   return (
