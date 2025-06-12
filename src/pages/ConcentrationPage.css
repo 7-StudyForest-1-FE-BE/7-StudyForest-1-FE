@@ -77,6 +77,10 @@
   line-height: normal;
 }
 
+.arrow__icon {
+  display: inline-flex;
+}
+
 .header__sub-title {
   display: flex;
   flex-direction: column;
@@ -92,11 +96,30 @@
   line-height: normal;
 }
 
-.point__num {
+.point__tag {
   display: flex;
-  width: 108px;
+  align-items: center;
+  padding: auto 12px;
+  gap: 4px;
+  border-radius: 50px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.point__icon {
+  display: flex;
+  width: 19px;
+  height: 19px;
+  padding: 0.226px 1.336px;
+  justify-content: center;
+  align-items: center;
+}
+
+.point__text {
+  display: flex;
+  width: 80px;
   height: 31px;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
   color: #414141;
   font-size: 16px;

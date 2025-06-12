@@ -1,3 +1,6 @@
+import leaf from "../assets/icon_leaf.svg";
+import arrow from "../assets/icon_arrow_right.svg";
+import play from "../assets/icon_play.svg";
 import { useState } from "react";
 import "./ConcentrationPage.css";
 
@@ -24,13 +27,22 @@ function ConcentrationPage() {
           <div className="header__title">
             <h1 className="title__txt">연우의 개발공장</h1>
             <div className="button">
-              <button className="habit__btn">오늘의 습관 ›</button>
-              <button className="home__btn">홈 ›</button>
+              <button className="habit__btn">
+                오늘의 습관
+                <img src={arrow} alt="arrow" className="arrow__icon" />
+              </button>
+              <button className="home__btn">
+                홈
+                <img src={arrow} alt="arrow" className="arrow__icon" />
+              </button>
             </div>
           </div>
           <div className="header__sub-title">
             <h2 className="point">현재까지 획득한 포인트</h2>
-            <div className="point__num">310P 획득</div>
+            <div className="point__tag">
+              <img src={leaf} alt="leaf" className="point__icon" />
+              <span className="point__text">310P 획득</span>
+            </div>
           </div>
         </div>
         <div className="concentration__timer-section">
@@ -44,7 +56,8 @@ function ConcentrationPage() {
                 className="concentration__start-btn"
                 onClick={handleStart}
               >
-                ▶ Start!
+                <img src={play} alt="play" className="play__icon" />
+                Start!
               </button>
             </div>
           </div>
