@@ -1,7 +1,7 @@
 .primary {
   color: #578246 !important;
 }
-.sr-only {
+.sr__only {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -57,6 +57,9 @@ body {
   border: 1px solid #ddd;
   font-size: 16px;
   outline: none;
+}
+.input__box__md input {
+  height: 42px;
 }
 .input__box input + button {
   position: absolute;

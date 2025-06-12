@@ -1,0 +1,235 @@
+.block__card {
+  margin: 40px auto;
+  padding: 40px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1200px;
+  background: #fff;
+  border-radius: 20px;
+  box-sizing: border-box;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.02);
+}
+.title__area {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.title__area h2 {
+  font-size: 24px;
+  font-weight: 700;
+}
+.title__area .util {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.search__box {
+  position: relative;
+}
+.search__box input {
+  padding-left: 44px;
+}
+.search__box img {
+  position: absolute;
+  top: 11px;
+  left: 16px;
+}
+.select__box {
+  position: relative;
+  display: flex;
+  padding: 0 48px 0 20px;
+  width: 180px;
+  height: 42px;
+  font-size: 16px;
+  color: #818181;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  border-radius: 16px;
+  z-index: 5;
+}
+.select__box button {
+  background: none;
+  border: 0;
+}
+.select__box > button {
+  color: #818181;
+}
+.select__box > button img {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  margin-top: -12px;
+  display: block;
+  width: 24px;
+  height: 24px;
+  content: "";
+}
+.select__box ul {
+  display: block;
+  position: absolute;
+  top: 48px;
+  left: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  background: #fff;
+  overflow: hidden;
+}
+.select__box ul li,
+.select__box ul button {
+  width: 100%;
+  height: 42px;
+  text-align: center;
+}
+.select__box ul li + li {
+  border-top: 1px solid #ddd;
+}
+.select__box ul button:hover {
+  background: #f7f7f7;
+}
+.card__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.card__list .item {
+  position: relative;
+  padding: 30px;
+  width: calc((100% - 48px) / 3);
+  height: 243px;
+  box-sizing: border-box;
+  border-radius: 20px;
+  background: #e1edde;
+  border: 1px solid #0000001a;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.item .info__area {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.top__area {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.point__label {
+  display: flex;
+  align-items: center;
+  padding: 0 12px 0 8px;
+  width: max-content;
+  height: 22px;
+  font-size: 12px;
+  gap: 4px;
+  font-weight: 500;
+  background: #ffffff4d;
+  border: 1px solid #0000001a;
+  border-radius: 22px;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+.card__title_area {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.card__title_area .title {
+  font-size: 18px;
+  font-weight: 600;
+}
+.card__title_area .title span {
+  color: #578246;
+}
+.card__title_area .term {
+  font-size: 14px;
+  color: #818181;
+}
+.item .description {
+  font-size: 16px;
+}
+.card__list .item.yellowed {
+  background: #fff1cc;
+}
+.item.yellowed .card__title_area .title span {
+  color: #c18e1b;
+}
+.card__list .item.bg {
+  background: #41414180;
+}
+.card__list .item.bg p,
+.card__list .item.bg span {
+  color: #fff;
+}
+.point__label img {
+  width: 14px;
+}
+.card__list .item.bg .point__label {
+  background: #00000080;
+}
+.emoji__area {
+  display: flex;
+  gap: 4px;
+}
+.emoji__label {
+  display: flex;
+  align-items: center;
+  padding: 0 12px 0 8px;
+  width: max-content;
+  height: 36px;
+  gap: 4px;
+  font-weight: 500;
+  color: #fff;
+  background: #00000080;
+  border: 1px solid #0000001a;
+  border-radius: 36px;
+  box-sizing: border-box;
+}
+.block__btns {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+}
+.btn__more {
+  width: 280px;
+  height: 52px;
+  background: none;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+}
+@media (max-width: 1199px) {
+  .recent__card__list {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow-x: scroll;
+  }
+  .recent__card__list .item {
+    width: 358px;
+  }
+  .entire__card__list .item {
+    width: calc((100% - 24px) / 2);
+  }
+}
+@media (max-width: 743px) {
+  .entire__card__list {
+    gap: 16px;
+  }
+  .entire__card__list .item {
+    width: calc(100%);
+  }
+  .title__area .util {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+  .search__box {
+    width: 100%;
+  }
+  .select__box {
+    width: 100%;
+  }
+}
