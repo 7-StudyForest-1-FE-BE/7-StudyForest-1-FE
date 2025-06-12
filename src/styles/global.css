@@ -1,3 +1,6 @@
+.primary {
+  color: #578246 !important;
+}
 .sr-only {
   position: absolute;
   width: 1px;
@@ -15,6 +18,128 @@ body {
 #wrap {
   width: 100%;
   overflow: hidden;
+}
+.form__area {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.form__area > button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  height: 58px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 16px;
+  background: #99c08e;
+  border: 0;
+}
+.input__row {
+}
+.input__row dl {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.input__box {
+  position: relative;
+}
+.input__box input {
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
+  padding: 0 24px;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  outline: none;
+}
+.input__box input + button {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+}
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+.modal__bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #00000080;
+}
+.modal__card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 92%;
+  max-width: 648px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 40px 24px;
+  border-radius: 20px;
+  background: #fff;
+  box-sizing: border-box;
+}
+.modal__card .title__area {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  text-align: center;
+}
+.modal__card .title__area h4 {
+  font-size: 24px;
+  font-weight: 700;
+}
+.modal__card .title__area p {
+  font-size: 18px;
+  color: #818181;
+}
+.modal__card .title__area .util {
+  position: absolute;
+  top: -4px;
+  right: 8px;
+}
+.modal__card .title__area .util button {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  background: none;
+  border: none;
+  color: #818181;
+  cursor: pointer;
+}
+.toast {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  background: #fde0e9;
+  border-radius: 12px;
+  color: #f50e0e;
+  white-space: nowrap;
+  z-index: 15;
 }
 @media (max-width: 1199px) {
   .container {
