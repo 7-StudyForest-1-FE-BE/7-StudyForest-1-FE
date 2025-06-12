@@ -35,6 +35,9 @@
   .inner {
     padding: 0 16px;
   }
+  .logo img {
+    width: 106px;
+  }
   .btn {
     width: 106px;
     height: 38px;
