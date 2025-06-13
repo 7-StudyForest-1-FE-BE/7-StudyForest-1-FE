@@ -1,0 +1,135 @@
+main.container {
+  margin-top: 24px;
+}
+
+.container {
+  max-width: 696px;
+  min-height: 1171px;
+  background-color: #fff;
+  border-radius: 16px;
+  margin: 0px auto 0px auto;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.study__create,
+.nick__name,
+.study__name,
+.introduction,
+.choice__background,
+.password,
+.password__check {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.study__create label {
+  max-width: 648px;
+  width: 100%;
+  color: #414141;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.study__create input {
+  max-width: 648px;
+  width: 100%;
+  height: 48px;
+  border-radius: 16px;
+  border: 1px solid #dddddd;
+  padding-left: 20px;
+  box-sizing: border-box;
+}
+
+.study__create textarea {
+  max-width: 648px;
+  width: 100%;
+  height: 98px;
+  border-radius: 16px;
+  border: 1px solid #dddddd;
+  padding-left: 20px;
+  padding-top: 15px;
+  resize: none;
+  box-sizing: border-box;
+}
+
+.container h2 {
+  color: #414141;
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 24px;
+}
+
+.study__create {
+  gap: 24px;
+}
+
+.choice__background {
+  display: flex;
+  flex-direction: column;
+}
+
+.background__items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  max-width: 648px;
+}
+
+.background__item {
+  width: 150px;
+  height: 150px;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.submit__btn {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+  max-width: 648px;
+  width: 100%;
+}
+
+.study__create__btn {
+  cursor: pointer;
+  background-color: #99c08e;
+  max-width: 648px;
+  width: 100%;
+  height: 58px;
+  padding: 16px 8px;
+  border-radius: 16px;
+  border: 0px;
+  font-size: 18px;
+  font-weight: 400;
+  color: #fff;
+}
+
+@media (max-width: 1199px) {
+  .container {
+    padding: 16px 16px 20px 16px;
+  }
+}
+
+@media (max-width: 743px) {
+  .hide__on__mobile {
+    display: none;
+  }
+  .container {
+    margin-left: 20px;
+    margin-right: 20px;
+    min-width: 344px;
+  }
+  .container h2 {
+    font-size: 16px;
+  }
+  .study__create label {
+    font-size: 16px;
+  }
+}
