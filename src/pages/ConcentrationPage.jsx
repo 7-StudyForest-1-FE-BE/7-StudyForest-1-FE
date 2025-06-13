@@ -184,12 +184,12 @@ function ConcentrationPage() {
                 />
               ) : (
                 <div
-                  className="concentration__time"
+                  className={`concentration__time ${
+                    !isRunning && !hasStarted
+                      ? "concentration__time--clickable"
+                      : ""
+                  }`}
                   onClick={handleTimeClick}
-                  style={{
-                    cursor: !isRunning && !hasStarted ? "pointer" : "default",
-                    userSelect: "none",
-                  }}
                 >
                   {formatTime(time)}
                 </div>
