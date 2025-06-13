@@ -29,6 +29,16 @@ function ConcentrationPage() {
     return isNegative ? `-${timeString}` : timeString;
   };
 
+  // 타이머 색상 결정 함수
+  const getTimerColor = () => {
+    if (time < 0) {
+      return "#818181"; // 마이너스 시간일 때 회색
+    } else if (time <= 10 && time >= 0) {
+      return "#F50E0E"; // 10초 이하일 때 빨간색
+    }
+    return "#414141"; // 기본 색상
+  };
+
   const handleStart = () => {
     if (time <= 0) {
       handleStop();
@@ -190,6 +200,7 @@ function ConcentrationPage() {
                       : ""
                   }`}
                   onClick={handleTimeClick}
+                  style={{ color: getTimerColor() }}
                 >
                   {formatTime(time)}
                 </div>
@@ -204,7 +215,11 @@ function ConcentrationPage() {
                   </button>
                 )}
                 <button
-                  className="concentration__start-btn"
+                  className={`concentration__start-btn ${
+                    (isRunning || isPaused) && time > 0
+                      ? "concentration__start-btn--running"
+                      : ""
+                  }`}
                   onClick={handleStart}
                 >
                   <img

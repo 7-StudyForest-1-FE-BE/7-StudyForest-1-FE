@@ -277,6 +277,15 @@
   background-color: #7bb67f;
 }
 
+/* 타이머 실행 중 Start 버튼 스타일 */
+.concentration__start-btn--running {
+  background-color: #818181 !important;
+}
+
+.concentration__start-btn--running:hover {
+  background-color: #818181 !important;
+}
+
 .status__container {
   position: fixed;
   bottom: 20px;
