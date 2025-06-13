@@ -235,13 +235,14 @@ function ConcentrationPage() {
         <div className="status__container">
           {isPaused && time > 0 && (
             <div className="status__message status__message--paused">
-              <span className="status__icon">⚠️</span>
+              <span className="status__icon">🚨</span>
               <span className="status__text">집중이 중단되었습니다.</span>
             </div>
           )}
 
           {showPointMessage && (
             <div className="status__message status__message--point">
+              <span className="status__icon">🎉</span>
               <span className="status__text">50포인트를 획득했습니다!</span>
             </div>
           )}
