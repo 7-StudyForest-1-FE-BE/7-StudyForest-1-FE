@@ -132,19 +132,6 @@
   line-height: normal;
 }
 
-.concentration__site-tag {
-  display: inline-flex;
-  align-items: center;
-  background-color: #e8f5e8;
-  color: #2d5a2d;
-  font-size: 12px;
-  font-weight: 500;
-  padding: 4px 8px;
-  border-radius: 12px;
-  margin-top: 8px;
-  width: fit-content;
-}
-
 /* 타이머 섹션 */
 .concentration__timer-section {
   display: flex;
@@ -175,6 +162,8 @@
   align-items: center;
   flex-shrink: 0;
   margin-bottom: 100px;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .timer__title-text {
@@ -184,6 +173,24 @@
   font-style: normal;
   font-weight: 800;
   line-height: normal;
+}
+
+.timer__status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.3);
+  gap: 8px;
+  padding: 6px 8px;
+}
+
+.timer__status-text {
+  color: #414141;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
 }
 
 .concentration__timer {
@@ -199,6 +206,18 @@
   color: #414141;
   font-style: normal;
   text-align: center;
+}
+
+.concentration__controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+}
+
+.concentration__control-btn {
+  border: none;
+  background: none;
 }
 
 .concentration__start-btn {
