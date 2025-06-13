@@ -1,6 +1,6 @@
-import leaf from "../assets/icon_leaf.svg";
-import arrow from "../assets/icon_arrow_right.svg";
-import play from "../assets/icon_play.svg";
+import leaf from "../assets/ic_leaf.svg";
+import arrow from "../assets/ic_arrow_right.svg";
+import play from "../assets/ic_play.svg";
 import { useState } from "react";
 import "./ConcentrationPage.css";
 
