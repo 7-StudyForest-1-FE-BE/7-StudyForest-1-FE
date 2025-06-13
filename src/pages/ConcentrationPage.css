@@ -132,19 +132,6 @@
   line-height: normal;
 }
 
-.concentration__site-tag {
-  display: inline-flex;
-  align-items: center;
-  background-color: #e8f5e8;
-  color: #2d5a2d;
-  font-size: 12px;
-  font-weight: 500;
-  padding: 4px 8px;
-  border-radius: 12px;
-  margin-top: 8px;
-  width: fit-content;
-}
-
 /* 타이머 섹션 */
 .concentration__timer-section {
   display: flex;
@@ -175,6 +162,8 @@
   align-items: center;
   flex-shrink: 0;
   margin-bottom: 100px;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .timer__title-text {
@@ -184,6 +173,24 @@
   font-style: normal;
   font-weight: 800;
   line-height: normal;
+}
+
+.timer__status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.3);
+  gap: 8px;
+  padding: 6px 8px;
+}
+
+.timer__status-text {
+  color: #414141;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
 }
 
 .concentration__timer {
@@ -199,6 +206,50 @@
   color: #414141;
   font-style: normal;
   text-align: center;
+  user-select: none;
+}
+
+.concentration__time--clickable {
+  cursor: pointer;
+}
+
+.concentration__time-input {
+  font-size: 150px;
+  font-weight: 800;
+  color: #414141;
+  text-align: center;
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 400px;
+}
+
+.concentration__controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.concentration__control-btn {
+  border: none;
+  background: none;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* 컨트롤 버튼 아이콘 크기 */
+.concentration__control-btn svg,
+.concentration__control-btn img,
+.concentration__control-btn .icon {
+  width: 60px;
+  height: 60px;
+  transition: all 0.3s ease;
 }
 
 .concentration__start-btn {
@@ -219,13 +270,64 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
   min-width: 120px;
+  flex-shrink: 0;
 }
 
 .concentration__start-btn:hover {
   background-color: #7bb67f;
 }
 
-/* 태블릿 화면 (1199px 이하) - Header 스타일과 맞춤 */
+/* 타이머 실행 중 Start 버튼 스타일 */
+.concentration__start-btn--running {
+  background-color: #818181 !important;
+}
+
+.concentration__start-btn--running:hover {
+  background-color: #818181 !important;
+}
+
+.status__container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.status__message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 12px;
+}
+
+.status__message--paused {
+  background-color: #fde0e9;
+  color: #f50e0e;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  padding: 14px 28px;
+}
+
+.status__message--point {
+  background: #e1edde;
+  color: #578246;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  padding: 14px 18px;
+}
+
+.status__icon {
+  font-size: 16px;
+}
+
+/* 태블릿 화면 (1199px 이하)*/
 @media (max-width: 1199px) {
   .concentration__container {
     max-width: 100%;
@@ -280,6 +382,23 @@
     font-size: 120px;
   }
 
+  .concentration__time-input {
+    font-size: 120px;
+    width: 350px;
+  }
+
+  .concentration__controls {
+    gap: 16px;
+    max-width: 500px;
+  }
+
+  .concentration__control-btn svg,
+  .concentration__control-btn img,
+  .concentration__control-btn .icon {
+    width: 50px;
+    height: 50px;
+  }
+
   .concentration__start-btn {
     width: 280px;
     height: 55px;
@@ -292,7 +411,7 @@
   }
 }
 
-/* 모바일 화면 (743px 이하) - Header 스타일과 맞춤 */
+/* 모바일 화면 (743px 이하)*/
 @media (max-width: 743px) {
   .concentration__container {
     width: calc(100% - 32px);
@@ -379,12 +498,38 @@
     font-weight: 700;
   }
 
+  .concentration__time-input {
+    font-size: 72px;
+    width: 250px;
+  }
+
+  .concentration__controls {
+    gap: 8px;
+    max-width: 100%;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
+
+  .concentration__control-btn {
+    min-width: 32px;
+    min-height: 32px;
+    padding: 4px;
+    flex-shrink: 1;
+  }
+
+  .concentration__control-btn svg,
+  .concentration__control-btn img,
+  .concentration__control-btn .icon {
+    width: 45px;
+    height: 45px;
+  }
+
   .concentration__start-btn {
-    width: 200px;
-    height: 48px;
-    font-size: 16px;
-    font-weight: 600;
-    border-radius: 24px;
+    width: 160px;
+    height: 44px;
+    font-size: 14px;
+    flex-shrink: 0;
+    flex-grow: 0;
   }
 
   .concentration__timer {
@@ -394,5 +539,32 @@
   .play__icon {
     width: 14px;
     height: 14px;
+  }
+}
+
+/* 초소형 모바일 화면 (480px 이하)*/
+@media (max-width: 480px) {
+  .concentration__controls {
+    gap: 6px;
+    padding: 0 16px;
+  }
+
+  .concentration__control-btn {
+    min-width: 28px;
+    min-height: 28px;
+    padding: 2px;
+  }
+
+  .concentration__control-btn svg,
+  .concentration__control-btn img,
+  .concentration__control-btn .icon {
+    width: 45px;
+    height: 45px;
+  }
+
+  .concentration__start-btn {
+    width: 140px;
+    height: 45px;
+    font-size: 18px;
   }
 }
