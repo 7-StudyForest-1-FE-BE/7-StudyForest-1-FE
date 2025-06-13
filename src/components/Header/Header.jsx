@@ -7,7 +7,7 @@ function Header() {
       <div className={styles.inner}>
         <div className={styles.logo}>
           <h1>
-            <span className="sr-only">공부의숲</span>
+            <span className="sr__only">공부의숲</span>
             <Link to={'/'}>
               <img src={logo} alt="공부의숲" />
             </Link>
