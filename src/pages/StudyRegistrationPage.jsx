@@ -14,7 +14,7 @@ function StudyRegistrationPage() {
   ];
 
   return (
-    <div className="container">
+    <div className="content__box">
       <h2>스터디 만들기</h2>
       <form className="study__create">
         <div className="nick__name">

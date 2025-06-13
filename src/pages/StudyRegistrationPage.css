@@ -1,14 +1,10 @@
-main.container {
-  margin-top: 24px;
-}
-
-.container {
+.content__box {
   max-width: 696px;
   min-height: 1171px;
   background-color: #fff;
   border-radius: 16px;
-  margin: 0px auto 0px auto;
-  padding: 10px;
+  margin: 24px auto 40px auto;
+  padding: 14px 14px 40px;
   box-sizing: border-box;
 }
 
@@ -112,24 +108,21 @@ main.container {
 }
 
 @media (max-width: 1199px) {
-  .container {
-    padding: 16px 16px 20px 16px;
-  }
 }
 
 @media (max-width: 743px) {
   .hide__on__mobile {
     display: none;
   }
-  .container {
-    margin-left: 20px;
-    margin-right: 20px;
-    min-width: 344px;
-  }
+
   .container h2 {
     font-size: 16px;
   }
   .study__create label {
     font-size: 16px;
+  }
+  .background__item {
+    width: 148px;
+    height: 148px;
   }
 }
