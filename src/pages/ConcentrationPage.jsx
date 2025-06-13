@@ -9,13 +9,13 @@ import { useState, useEffect, useRef } from "react";
 import "./ConcentrationPage.css";
 
 function ConcentrationPage() {
-  const [time, setTime] = useState(25 * 60); // 25분을 초로 변환
+  const [time, setTime] = useState(25 * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [hasStarted, setHasStarted] = useState(false); // 타이머가 한 번이라도 시작했는지 확인
-  const [isEditing, setIsEditing] = useState(false); // 시간 편집 모드
+  const [isEditing, setIsEditing] = useState(false); // 시간 편집
   const [editTime, setEditTime] = useState("25:00"); // 편집 중인 시간
-  const [isPaused, setIsPaused] = useState(false); // 일시정지 상태
-  const [showPointMessage, setShowPointMessage] = useState(false); // 포인트 획득 메시지 표시
+  const [isPaused, setIsPaused] = useState(false); // 일시정지
+  const [showPointMessage, setShowPointMessage] = useState(false); // 포인트 획득 메시지
   const intervalRef = useRef(null);
 
   const formatTime = (seconds) => {
@@ -54,7 +54,7 @@ function ConcentrationPage() {
       setShowPointMessage(false);
     }, 3000);
 
-    // 초기 상태로 리셋
+    // 리셋
     setIsRunning(false);
     setTime(25 * 60);
     setHasStarted(false);
@@ -66,7 +66,7 @@ function ConcentrationPage() {
   const handleRestart = () => {
     setIsRunning(false);
     setTime(25 * 60); // 25분으로 리셋
-    setHasStarted(false); // 리셋 시 시작 상태도 초기화
+    setHasStarted(false); // 리셋 시 시작 상태 초기화
     setIsEditing(false);
     setEditTime("25:00");
     setIsPaused(false);
@@ -230,8 +230,6 @@ function ConcentrationPage() {
             </div>
           </div>
         </div>
-
-        {/* 상태 메시지 */}
         <div className="status__container">
           {isPaused && time > 0 && (
             <div className="status__message status__message--paused">

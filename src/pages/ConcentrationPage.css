@@ -277,7 +277,6 @@
   background-color: #7bb67f;
 }
 
-/* 상태 메시지 스타일 */
 .status__container {
   position: fixed;
   bottom: 20px;
@@ -319,7 +318,7 @@
   font-size: 16px;
 }
 
-/* 태블릿 화면 (1199px 이하) - Header 스타일과 맞춤 */
+/* 태블릿 화면 (1199px 이하)*/
 @media (max-width: 1199px) {
   .concentration__container {
     max-width: 100%;
@@ -403,7 +402,7 @@
   }
 }
 
-/* 모바일 화면 (743px 이하) - Header 스타일과 맞춤 */
+/* 모바일 화면 (743px 이하)*/
 @media (max-width: 743px) {
   .concentration__container {
     width: calc(100% - 32px);
@@ -534,7 +533,7 @@
   }
 }
 
-/* 초소형 모바일 화면 (480px 이하) - 추가 최적화 */
+/* 초소형 모바일 화면 (480px 이하)*/
 @media (max-width: 480px) {
   .concentration__controls {
     gap: 6px;
