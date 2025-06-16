@@ -1,13 +1,9 @@
-main.container {
-  margin-top: 24px;
-}
-
 .container {
   max-width: 696px;
   min-height: 1171px;
   background-color: #fff;
   border-radius: 16px;
-  margin: 0px auto 0px auto;
+  margin: 14px auto 40px auto;
   padding: 10px;
   box-sizing: border-box;
 }
@@ -122,8 +118,6 @@ main.container {
     display: none;
   }
   .container {
-    margin-left: 20px;
-    margin-right: 20px;
     min-width: 344px;
   }
   .container h2 {
@@ -131,5 +125,9 @@ main.container {
   }
   .study__create label {
     font-size: 16px;
+  }
+  .background__item {
+    width: 148px;
+    height: 148px;
   }
 }
