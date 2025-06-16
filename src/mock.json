@@ -1,0 +1,136 @@
+[
+  {
+    "id": "study_1",
+    "title": "하루 1시간 코딩 스터디",
+    "description": "매일 조금씩 꾸준히 코딩 공부하기 위한 스터디입니다.",
+    "theme": {
+      "type": "color",
+      "value": "##E1EDDE",
+      "textColor": "#578246"
+    },
+    "habits": [
+      {
+        "id": "habit_1_1",
+        "title": "30분 이상 알고리즘 문제 풀기",
+        "checkedDays": {
+          "mon": true,
+          "tue": false,
+          "wed": true,
+          "thu": false,
+          "fri": true,
+          "sat": false,
+          "sun": true
+        }
+      },
+      {
+        "id": "habit_1_2",
+        "title": "CS 지식 블로그 정리하기",
+        "checkedDays": {
+          "mon": false,
+          "tue": true,
+          "wed": true,
+          "thu": false,
+          "fri": false,
+          "sat": true,
+          "sun": false
+        }
+      }
+    ],
+    "emojiReactions": [
+      { "emoji": "🔥", "count": 5 },
+      { "emoji": "👏", "count": 2 }
+    ],
+    "createdAt": "2025-06-13T12:00:00Z",
+    "createdBy": "user_abc123"
+  },
+  {
+    "id": "study_2",
+    "title": "아침 루틴 챌린지",
+    "description": "건강한 하루를 위한 아침 습관 만들기 챌린지입니다.",
+    "theme": {
+      "type": "image",
+      "value": "https://images.unsplash.com/photo-1749947213438-47476d0cc79e",
+      "textColor": "#ffffff"
+    },
+    "habits": [
+      {
+        "id": "habit_2_1",
+        "title": "일어나서 바로 물 한 잔 마시기",
+        "checkedDays": {
+          "mon": true,
+          "tue": true,
+          "wed": true,
+          "thu": true,
+          "fri": true,
+          "sat": true,
+          "sun": true
+        }
+      },
+      {
+        "id": "habit_2_2",
+        "title": "10분 스트레칭",
+        "checkedDays": {
+          "mon": false,
+          "tue": true,
+          "wed": false,
+          "thu": true,
+          "fri": false,
+          "sat": true,
+          "sun": false
+        }
+      },
+      {
+        "id": "habit_2_3",
+        "title": "명상 5분",
+        "checkedDays": {
+          "mon": true,
+          "tue": false,
+          "wed": false,
+          "thu": true,
+          "fri": true,
+          "sat": false,
+          "sun": true
+        }
+      }
+    ],
+    "emojiReactions": [
+      { "emoji": "🌞", "count": 3 },
+      { "emoji": "💖", "count": 1 },
+      { "emoji": "💪", "count": 4 }
+    ],
+    "createdAt": "2025-06-12T08:30:00Z",
+    "createdBy": "user_def456"
+  },
+  {
+    "id": "study_3",
+    "title": "책 읽는 밤",
+    "description": "매일 자기 전 20분 독서하기 스터디입니다.",
+    "theme": {
+      "type": "color",
+      "value": "#FFF1CC",
+      "textColor": "#C18E1B"
+    },
+    "habits": [
+      {
+        "id": "habit_3_1",
+        "title": "잠들기 전 독서 20분",
+        "checkedDays": {
+          "mon": true,
+          "tue": true,
+          "wed": true,
+          "thu": true,
+          "fri": true,
+          "sat": false,
+          "sun": false
+        }
+      }
+    ],
+    "emojiReactions": [
+      { "emoji": "📚", "count": 6 },
+      { "emoji": "🛏️", "count": 2 },
+      { "emoji": "😴", "count": 1 }
+    ],
+    "createdAt": "2025-06-11T22:15:00Z",
+    "createdBy": "user_xyz789"
+  }
+]
