@@ -1,14 +1,14 @@
-import styles from "./StudyViewPage.module.css";
-import empty from "../assets/sticker/empty.svg";
-import lightGreen from "../assets/sticker/light_green.svg";
-import green from "../assets/sticker/green.svg";
-import deepGreen from "../assets/sticker/deep_green.svg";
-import smile from "../assets/ic_smile.svg";
-import arrowRight from "../assets/ic_arrow_right.svg";
-import point from "../assets/ic_point.svg";
-import visibilityOff from "../assets/ic_visibility_off.png";
-import visibilityOn from "../assets/ic_visibility_on.png";
-import { useState } from "react";
+import styles from './StudyViewPage.module.css';
+import empty from '../assets/sticker/empty.svg';
+import lightGreen from '../assets/sticker/light_green.svg';
+import green from '../assets/sticker/green.svg';
+import deepGreen from '../assets/sticker/deep_green.svg';
+import smile from '../assets/ic_smile.svg';
+import arrowRight from '../assets/ic_arrow_right.svg';
+import point from '../assets/ic_point.svg';
+import visibilityOff from '../assets/ic_visibility_off.png';
+import visibilityOn from '../assets/ic_visibility_on.png';
+import { useState } from 'react';
 
 function StudyViewPage() {
   const [habits, setHabits] = useState(true);
@@ -28,12 +28,12 @@ function StudyViewPage() {
             </div>
             <ul className={styles.study__action__area}>
               <li>
-                <button type="button" className={"primary"}>
+                <button type="button" className={'primary'}>
                   공유하기
                 </button>
               </li>
               <li>
-                <button type="button" className={"primary"}>
+                <button type="button" className={'primary'}>
                   수정하기
                 </button>
               </li>
@@ -65,9 +65,7 @@ function StudyViewPage() {
             <div className={styles.content__area}>
               <dl>
                 <dt>소개</dt>
-                <dd>
-                  Slow And Steady Wins The Race! 다들 오늘 하루도 화이팅 :)
-                </dd>
+                <dd>Slow And Steady Wins The Race! 다들 오늘 하루도 화이팅 :)</dd>
               </dl>
               <dl>
                 <dt>현재까지 획득한 포인트</dt>
@@ -101,9 +99,7 @@ function StudyViewPage() {
               </div>
               <div className={styles.table__header}>
                 <div className={styles.table__row}>
-                  <div className={`${styles.col} ${styles.col__name}`}>
-                    미라클모닝 6시 기상
-                  </div>
+                  <div className={`${styles.col} ${styles.col__name}`}>미라클모닝 6시 기상</div>
                   <div className={`${styles.col} ${styles.col__day}`}>
                     <img src={green} alt="" />
                   </div>
@@ -127,9 +123,7 @@ function StudyViewPage() {
                   </div>
                 </div>
                 <div className={styles.table__row}>
-                  <div className={`${styles.col} ${styles.col__name}`}>
-                    아침 챙겨 먹기
-                  </div>
+                  <div className={`${styles.col} ${styles.col__name}`}>아침 챙겨 먹기</div>
                   <div className={`${styles.col} ${styles.col__day}`}>
                     <img src={green} alt="" />
                   </div>
@@ -153,9 +147,7 @@ function StudyViewPage() {
                   </div>
                 </div>
                 <div className={styles.table__row}>
-                  <div className={`${styles.col} ${styles.col__name}`}>
-                    React 스터디 책 1챕터 읽기
-                  </div>
+                  <div className={`${styles.col} ${styles.col__name}`}>React 스터디 책 1챕터 읽기</div>
                   <div className={`${styles.col} ${styles.col__day}`}>
                     <img src={deepGreen} alt="" />
                   </div>
@@ -179,9 +171,7 @@ function StudyViewPage() {
                   </div>
                 </div>
                 <div className={styles.table__row}>
-                  <div className={`${styles.col} ${styles.col__name}`}>
-                    물 2L 마시기
-                  </div>
+                  <div className={`${styles.col} ${styles.col__name}`}>물 2L 마시기</div>
                   <div className={`${styles.col} ${styles.col__day}`}>
                     <img src={empty} alt="" />
                   </div>
@@ -238,13 +228,7 @@ function StudyViewPage() {
                       </dt>
                       <dd className="">
                         <div className="input__box">
-                          <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder="비밀번호를 입력해주세요"
-                            autocomplete="off"
-                          />
+                          <input type="password" id="password" name="password" placeholder="비밀번호를 입력해주세요" autocomplete="off" />
                           <button type="button" className="btn__visible">
                             <img src={visibilityOff} />
                           </button>
