@@ -3,9 +3,13 @@ import smile from "../assets/ic_smile.svg";
 import point from "../assets/ic_point.svg";
 import search from "../assets/ic_search.svg";
 import toggle from "../assets/ic_toggle.svg";
+import mockData from "../mock.json";
+import CardList from "../components/Study/CardList";
 import { useState } from "react";
 
 function HomePage() {
+  const [items, setItems] = useState(mockData);
+  console.log(items);
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -185,7 +189,11 @@ function HomePage() {
           </div>
         </div>
         <div className={styles.content__area}>
-          <div className={`${styles.card__list} ${styles.entire__card__list}`}>
+          <CardList
+            items={items}
+            className={`${styles.card__list} ${styles.entire__card__list}`}
+          />
+          {/* <div className={`${styles.card__list} ${styles.entire__card__list}`}>
             <div className={styles.item}>
               <div className={styles.info__area}>
                 <div className={styles.top__area}>
@@ -291,7 +299,7 @@ function HomePage() {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className={styles.block__btns}>
             <button type="button" className={`${styles.btn__more} primary`}>
               더보기

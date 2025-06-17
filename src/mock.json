@@ -1,8 +1,10 @@
 [
   {
     "id": "study_1",
+    "nickname": "스프린트",
     "title": "하루 1시간 코딩 스터디",
     "description": "매일 조금씩 꾸준히 코딩 공부하기 위한 스터디입니다.",
+    "points": 310,
     "theme": {
       "type": "color",
       "value": "##E1EDDE",
@@ -13,26 +15,26 @@
         "id": "habit_1_1",
         "title": "30분 이상 알고리즘 문제 풀기",
         "checkedDays": {
-          "mon": true,
-          "tue": false,
-          "wed": true,
-          "thu": false,
-          "fri": true,
-          "sat": false,
-          "sun": true
+          "월": true,
+          "화": false,
+          "수": true,
+          "목": false,
+          "금": true,
+          "토": false,
+          "일": true
         }
       },
       {
         "id": "habit_1_2",
         "title": "CS 지식 블로그 정리하기",
         "checkedDays": {
-          "mon": false,
-          "tue": true,
-          "wed": true,
-          "thu": false,
-          "fri": false,
-          "sat": true,
-          "sun": false
+          "월": false,
+          "화": true,
+          "수": true,
+          "목": false,
+          "금": false,
+          "토": true,
+          "일": false
         }
       }
     ],
@@ -45,8 +47,10 @@
   },
   {
     "id": "study_2",
+    "nickname": "이유디",
     "title": "아침 루틴 챌린지",
     "description": "건강한 하루를 위한 아침 습관 만들기 챌린지입니다.",
+    "points": 240,
     "theme": {
       "type": "image",
       "value": "https://images.unsplash.com/photo-1749947213438-47476d0cc79e",
@@ -57,39 +61,39 @@
         "id": "habit_2_1",
         "title": "일어나서 바로 물 한 잔 마시기",
         "checkedDays": {
-          "mon": true,
-          "tue": true,
-          "wed": true,
-          "thu": true,
-          "fri": true,
-          "sat": true,
-          "sun": true
+          "월": true,
+          "화": true,
+          "수": true,
+          "목": true,
+          "금": true,
+          "토": true,
+          "일": true
         }
       },
       {
         "id": "habit_2_2",
         "title": "10분 스트레칭",
         "checkedDays": {
-          "mon": false,
-          "tue": true,
-          "wed": false,
-          "thu": true,
-          "fri": false,
-          "sat": true,
-          "sun": false
+          "월": false,
+          "화": true,
+          "수": false,
+          "목": true,
+          "금": false,
+          "토": true,
+          "일": false
         }
       },
       {
         "id": "habit_2_3",
         "title": "명상 5분",
         "checkedDays": {
-          "mon": true,
-          "tue": false,
-          "wed": false,
-          "thu": true,
-          "fri": true,
-          "sat": false,
-          "sun": true
+          "월": true,
+          "화": false,
+          "수": false,
+          "목": true,
+          "금": true,
+          "토": false,
+          "일": true
         }
       }
     ],
@@ -103,8 +107,10 @@
   },
   {
     "id": "study_3",
+    "nickname": "밀리",
     "title": "책 읽는 밤",
     "description": "매일 자기 전 20분 독서하기 스터디입니다.",
+    "points": 150,
     "theme": {
       "type": "color",
       "value": "#FFF1CC",
@@ -115,13 +121,13 @@
         "id": "habit_3_1",
         "title": "잠들기 전 독서 20분",
         "checkedDays": {
-          "mon": true,
-          "tue": true,
-          "wed": true,
-          "thu": true,
-          "fri": true,
-          "sat": false,
-          "sun": false
+          "월": true,
+          "화": true,
+          "수": true,
+          "목": true,
+          "금": true,
+          "토": false,
+          "일": false
         }
       }
     ],
