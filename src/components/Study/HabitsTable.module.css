@@ -1,0 +1,43 @@
+.table__row {
+  display: flex;
+}
+.table__row .col {
+  display: flex;
+  align-items: center;
+  padding: 12px 4px;
+}
+.table__row .col__name {
+  flex: 1;
+  text-align: right;
+  justify-content: flex-end;
+  font-weight: 600;
+  padding-right: 4%;
+}
+.table__row .col__day {
+  width: 10%;
+  justify-content: center;
+  color: #818181;
+}
+@media (max-width: 1199px) {
+}
+@media (max-width: 743px) {
+  .table {
+    overflow-x: scroll;
+  }
+  .table__row {
+    white-space: nowrap;
+  }
+  .table__row .col {
+    font-size: 14px;
+  }
+  .table__row .col__name {
+    flex: 0 0 122px;
+    width: 122px;
+    padding-right: 0;
+    white-space: pre-wrap;
+  }
+  .table__row .col__day {
+    width: 64px;
+    flex: 0 0 64px;
+  }
+}

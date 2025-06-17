@@ -15,12 +15,21 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <App>
         <Routes>
+<<<<<<< HEAD
           <Route path={'/'} element={<HomePage />} />
           <Route path={'/view'} element={<StudyViewPage />} />
           <Route path={'/registration'} element={<StudyRegistrationPage />} />
           <Route path={'/studylist'} element={<StudyListPage />} />
           <Route path={'/habit'} element={<HabitPage />} />
           <Route path={'/concentration'} element={<ConcentrationPage />} />
+=======
+          <Route path={"/"} element={<HomePage />} />
+          <Route path={"/view"} element={<StudyViewPage />} />
+          <Route path={"/view/:studyId"} element={<StudyViewPage />} />
+          <Route path={"/registration"} element={<StudyRegistrationPage />} />
+          <Route path={"/habit"} element={<HabitPage />} />
+          <Route path={"/concentration"} element={<ConcentrationPage />} />
+>>>>>>> ba8cf8a4f785d3968b8c81cdd1c520cf62d1de01
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </App>
