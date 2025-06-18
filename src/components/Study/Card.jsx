@@ -2,6 +2,7 @@ import styles from "../../pages/HomePage.module.css";
 import smile from "../../assets/ic_smile.svg";
 import point from "../../assets/ic_point.svg";
 import EmojiButton from "../Emoji/EmojiButton";
+import { Link } from "react-router";
 
 const formatData = (value) => {
   const date = new Date(value);
@@ -39,15 +40,17 @@ function Card({ item }) {
     >
       <div className={styles.info__area}>
         <div className={styles.top__area}>
-          <div className={styles.card__title_area}>
-            <p className={styles.title}>
-              <span style={{ color: textColor }}>{item.nickname}</span>의{" "}
-              {item.title}
-            </p>
-            <span className={styles.term}>
-              {calculateDaysSince(formatData(item.createdAt))}일째 진행 중
-            </span>
-          </div>
+          <Link to={`/view/${item.id}`}>
+            <div className={styles.card__title_area}>
+              <p className={styles.title}>
+                <span style={{ color: textColor }}>{item.nickname}</span>의{" "}
+                {item.title}
+              </p>
+              <span className={styles.term}>
+                {calculateDaysSince(formatData(item.createdAt))}일째 진행 중
+              </span>
+            </div>
+          </Link>
           <div className={styles.point__label}>
             <img src={point} />
             <p>
