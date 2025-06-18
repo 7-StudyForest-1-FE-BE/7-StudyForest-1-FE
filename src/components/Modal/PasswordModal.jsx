@@ -1,40 +1,46 @@
 import styles from "./PasswordModal.module.css";
+import visibilityOff from "../../assets/ic_visibility_off.png";
+import visibilityOn from "../../assets/ic_visibility_on.png";
 
 function PasswordModal({}) {
   return (
-    <div className={styles.modaloverlay}>
-      <div className={styles.modalbox}>
-        <h1 className={styles.modal__header}>습관 목록</h1>
-
-        <div className={styles.modal__list}>
-          {tempHabits.map((habit, index) => (
-            <div className={styles.modal__row}>
-              <input
-                key={index}
-                type="text"
-                value={habit}
-                onChange={(e) => ChangeHabit(index, e.target.value)}
-                className={styles.modal__input}
-                placeholder={"_______________"}
-              />
-              <img
-                src={deleteIcon}
-                alt="삭제"
-                onClick={() => RemoveHabit(index)}
-                className={styles.modal__remove}
-              />
-            </div>
-          ))}
+    <div className={styles.modal}>
+      <div className={styles.modal__bg}></div>
+      <div className={styles.modal__card}>
+        <div className={styles.title__area}>
+          <h4>연우의 개발공장</h4>
+          <p>권한이 필요해요!</p>
+          <div className={styles.util}>
+            <button type="button">나가기</button>
+          </div>
         </div>
-
-        <div className={styles.modal__plus} onClick={AddHabit} />
-
-        <div className={styles.modal__btngroup}>
-          <button onClick={HandleCancel} className={styles.modal__cancelbtn} />
-          <button
-            onClick={HandleComplete}
-            className={styles.modal__completedbtn}
-          />
+        <div className={styles.content__area}>
+          <form>
+            <div className="form__area">
+              <div className="input__row">
+                <dl>
+                  <dt className="">
+                    <label for="password">비밀번호 확인</label>
+                  </dt>
+                  <dd className="">
+                    <div className="input__box">
+                      <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="비밀번호를 입력해주세요"
+                        autocomplete="off"
+                      />
+                      <button type="button" className="btn__visible">
+                        <img src={visibilityOff} />
+                      </button>
+                    </div>
+                  </dd>
+                </dl>
+              </div>
+              <button type="button">수정하러 가기</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
