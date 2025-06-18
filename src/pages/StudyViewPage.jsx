@@ -1,17 +1,14 @@
 import styles from "./StudyViewPage.module.css";
-import empty from "../assets/sticker/empty.svg";
-import lightGreen from "../assets/sticker/light_green.svg";
-import green from "../assets/sticker/green.svg";
-import deepGreen from "../assets/sticker/deep_green.svg";
 import smile from "../assets/ic_smile.svg";
 import arrowRight from "../assets/ic_arrow_right.svg";
 import point from "../assets/ic_point.svg";
-import visibilityOff from "../assets/ic_visibility_off.png";
-import visibilityOn from "../assets/ic_visibility_on.png";
 import { useState } from "react";
 import { Link, Navigate, useParams } from "react-router";
 import mockData from "../mock.json";
 import HabitsTable from "../components/Study/HabitsTable";
+import EmojiPicker from "emoji-picker-react";
+import PasswordModal from "../components/Modal/PasswordModal";
+import EmojiButton from "../components/Emoji/EmojiButton";
 
 function getStudyItem(studyId) {
   return mockData.find((study) => study.id === studyId);
@@ -27,8 +24,12 @@ function StudyViewPage() {
     return <Navigate to={"/"} />;
   }
 
-  const [open, setOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEmojiOpen, setIsEmojiOpen] = useState(false);
   const [pwError, setPwError] = useState(false);
+  const handleEmojiPicker = () => {
+    setIsEmojiOpen((prev) => !prev);
+  };
   const handleModal = () => {
     setOpen((prev) => !prev);
   };
@@ -39,10 +40,18 @@ function StudyViewPage() {
         <div className={styles.card__header}>
           <div className={styles.util}>
             <div className={styles.emoji__area}>
-              <button type="button">
-                <img src={smile} />
-                추가
-              </button>
+              {item.emojiReactions.map((reaction) => {
+                return <EmojiButton reaction={reaction} />;
+              })}
+              <div className={styles.picker__area}>
+                <button type="button" onClick={handleEmojiPicker}>
+                  <img src={smile} />
+                  추가
+                </button>
+                {isEmojiOpen && (
+                  <EmojiPicker className={styles.emoji__picker} />
+                )}
+              </div>
             </div>
             <ul className={styles.study__action__area}>
               <li>
@@ -114,48 +123,7 @@ function StudyViewPage() {
           )}
         </div>
       </div>
-      {open && (
-        <div className="modal">
-          <div className="modal__bg"></div>
-          <div className="modal__card">
-            <div className="title__area">
-              <h4>연우의 개발공장</h4>
-              <p>권한이 필요해요!</p>
-              <div className="util">
-                <button type="button">나가기</button>
-              </div>
-            </div>
-            <div className="content__area">
-              <form>
-                <div className="form__area">
-                  <div className="input__row">
-                    <dl>
-                      <dt className="">
-                        <label for="password">비밀번호 확인</label>
-                      </dt>
-                      <dd className="">
-                        <div className="input__box">
-                          <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder="비밀번호를 입력해주세요"
-                            autocomplete="off"
-                          />
-                          <button type="button" className="btn__visible">
-                            <img src={visibilityOff} />
-                          </button>
-                        </div>
-                      </dd>
-                    </dl>
-                  </div>
-                  <button type="button">수정하러 가기</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      )}
+      {isModalOpen && <PasswordModal />}
       {pwError && (
         <div className="toast">
           <p>비밀번호가 일치하지 않습니다. 다시 입력해주세요.</p>
