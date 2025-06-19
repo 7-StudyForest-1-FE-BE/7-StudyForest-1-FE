@@ -62,20 +62,23 @@ function HomePage() {
     setRecentStudies(matched);
   }, []);
 
-  if (recentStudies.length === 0) return null;
   return (
     <>
-      <article className={styles.block__card}>
-        <div className={styles.title__area}>
-          <h2>최근 조회한 스터디</h2>
-        </div>
-        <div className={styles.content__area}>
-          <CardList
-            items={recentStudies}
-            className={`${styles.card__list} ${styles.recent__card__list}`}
-          />
-        </div>
-      </article>
+      {recentStudies.length > 0 ? (
+        <article className={styles.block__card}>
+          <div className={styles.title__area}>
+            <h2>최근 조회한 스터디</h2>
+          </div>
+          <div className={styles.content__area}>
+            <CardList
+              items={recentStudies}
+              className={`${styles.card__list} ${styles.recent__card__list}`}
+            />
+          </div>
+        </article>
+      ) : (
+        ""
+      )}
       <article className={styles.block__card}>
         <div className={styles.title__area}>
           <h2>스터디 둘러보기</h2>
