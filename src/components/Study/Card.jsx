@@ -3,6 +3,7 @@ import smile from "../../assets/ic_smile.svg";
 import point from "../../assets/ic_point.svg";
 import EmojiButton from "../Emoji/EmojiButton";
 import { Link } from "react-router";
+import bgThemes from "../../data/bgThemes.js";
 
 const formatData = (value) => {
   const date = new Date(value);
@@ -20,31 +21,36 @@ function calculateDaysSince(dateString) {
 }
 
 function Card({ item }) {
-  const { type, value, textColor } = item.theme;
+  const theme = bgThemes.find((theme) => theme.id === (item.bg || 1));
+  console.log("theme: " + theme);
   let style = {};
-  if (type === "image") {
+  if (theme.type === "image") {
     style = {
-      background: `url("${value}")`,
+      background: `url("${theme.value}")`,
       backgroundSize: "contain",
     };
   } else {
     style = {
-      background: value,
+      background: theme.value,
     };
   }
-
+  console.log("item.bg:" + item.bg);
+  console.log(
+    "bgThemes ids:",
+    bgThemes.map((t) => t.id)
+  );
   return (
     <div
-      className={`${styles.item} ${type === "image" ? styles.bg : ""}`}
+      className={`${styles.item} ${theme.type === "image" ? styles.bg : ""}`}
       style={style}
     >
       <div className={styles.info__area}>
         <div className={styles.top__area}>
-          <Link to={`/view/${item.id}`}>
+          <Link to={`/view/${item._id}`}>
             <div className={styles.card__title_area}>
               <p className={styles.title}>
-                <span style={{ color: textColor }}>{item.nickname}</span>의{" "}
-                {item.title}
+                <span style={{ color: theme.textColor }}>{item.nickname}</span>
+                의 {item.title}
               </p>
               <span className={styles.term}>
                 {calculateDaysSince(formatData(item.createdAt))}일째 진행 중
@@ -54,14 +60,14 @@ function Card({ item }) {
           <div className={styles.point__label}>
             <img src={point} />
             <p>
-              <span>{item.points}</span>P 획득
+              <span>{item.point || 0}</span>P 획득
             </p>
           </div>
         </div>
         <p className={styles.description}>{item.description}</p>
       </div>
       <div className={styles.emoji__area}>
-        {item.emojiReactions.map((reaction) => {
+        {item.emojis?.map((reaction) => {
           return <EmojiButton reaction={reaction} />;
         })}
       </div>
