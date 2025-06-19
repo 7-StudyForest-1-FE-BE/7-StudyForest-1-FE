@@ -214,6 +214,14 @@
   border-radius: 20px;
   border: 1px solid #ddd;
 }
+.no__data {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 243px;
+}
 @media (max-width: 1199px) {
   .recent__card__list {
     flex-wrap: nowrap;

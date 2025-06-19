@@ -27,6 +27,21 @@
   display: flex;
   align-items: center;
 }
+.emoji__area {
+  position: relative;
+  gap: 8px;
+}
+.emoji__area > button {
+  background: #000000b3 !important;
+}
+.picker__area {
+  position: relative;
+}
+.emoji__picker {
+  position: absolute !important;
+  top: 36px;
+  left: 0;
+}
 .emoji__area button {
   padding: 0 8px;
   display: flex;
@@ -66,7 +81,8 @@
 .study__detail__area {
   gap: 8px;
 }
-.study__detail__area button {
+.study__detail__area button,
+.study__detail__area a {
   display: flex;
   align-items: center;
   justify-content: center;
