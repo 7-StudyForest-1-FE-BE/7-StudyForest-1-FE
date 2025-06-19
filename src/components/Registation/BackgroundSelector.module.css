@@ -1,0 +1,54 @@
+.choice__background {
+  display: flex;
+  flex-direction: column;
+}
+
+.background__items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  max-width: 648px;
+}
+
+.label {
+  color: #414141;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.background__item {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-bottom: 16px;
+}
+
+.background__item.selected {
+  outline: 3px solid #99c08e;
+}
+
+.paw__icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 32px;
+  height: 32px;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+}
+
+@media (max-width: 743px) {
+  .background__item {
+    width: 148px;
+    height: 148px;
+  }
+}
