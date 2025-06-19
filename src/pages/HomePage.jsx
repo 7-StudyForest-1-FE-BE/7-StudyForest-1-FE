@@ -5,9 +5,10 @@ import search from "../assets/ic_search.svg";
 import toggle from "../assets/ic_toggle.svg";
 import mockData from "../mock.json";
 import CardList from "../components/Study/CardList";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 function HomePage() {
+  const [recentStudies, setRecentStudies] = useState([]);
   const [sortOption, setSortOption] = useState({
     key: "latest",
     label: "최신순",
@@ -52,6 +53,16 @@ function HomePage() {
     e.preventDefault();
     setKeyword(inputValue);
   };
+
+  useEffect(() => {
+    const recentIds = JSON.parse(localStorage.getItem("recentStudyIds")) || [];
+    const matched = recentIds
+      .map((id) => mockData.find((study) => study.id === id))
+      .filter(Boolean);
+    setRecentStudies(matched);
+  }, []);
+
+  if (recentStudies.length === 0) return null;
   return (
     <>
       <article className={styles.block__card}>
@@ -59,113 +70,10 @@ function HomePage() {
           <h2>최근 조회한 스터디</h2>
         </div>
         <div className={styles.content__area}>
-          <div className={`${styles.card__list} ${styles.recent__card__list}`}>
-            <div className={`${styles.item} ${styles.bg}`}>
-              <div className={styles.info__area}>
-                <div className={styles.top__area}>
-                  <div className={styles.card__title_area}>
-                    <p className={styles.title}>
-                      <span>이유디</span>의 UX 스터디
-                    </p>
-                    <span className={styles.term}>62일째 진행 중</span>
-                  </div>
-                  <div className={styles.point__label}>
-                    <img src={point} />
-                    <p>
-                      <span>310</span>P 획득
-                    </p>
-                  </div>
-                </div>
-                <p className={styles.description}>
-                  Slow And Steady Wins The Race!!
-                </p>
-              </div>
-              <div className={styles.emoji__area}>
-                <button type="button" className={styles.emoji__label}>
-                  <img src={smile} />
-                  37
-                </button>
-                <button type="button" className={styles.emoji__label}>
-                  <img src={smile} />
-                  37
-                </button>
-                <button type="button" className={styles.emoji__label}>
-                  <img src={smile} />
-                  37
-                </button>
-              </div>
-            </div>
-            <div className={styles.item}>
-              <div className={styles.info__area}>
-                <div className={styles.top__area}>
-                  <div className={styles.card__title_area}>
-                    <p className={styles.title}>
-                      <span>이유디</span>의 UX 스터디
-                    </p>
-                    <span className={styles.term}>62일째 진행 중</span>
-                  </div>
-                  <div className={styles.point__label}>
-                    <img src={point} />
-                    <p>
-                      <span>310</span>P 획득
-                    </p>
-                  </div>
-                </div>
-                <p className={styles.description}>
-                  Slow And Steady Wins The Race!!
-                </p>
-              </div>
-              <div className={styles.emoji__area}>
-                <button type="button" className={styles.emoji__label}>
-                  <img src={smile} />
-                  37
-                </button>
-                <button type="button" className={styles.emoji__label}>
-                  <img src={smile} />
-                  37
-                </button>
-                <button type="button" className={styles.emoji__label}>
-                  <img src={smile} />
-                  37
-                </button>
-              </div>
-            </div>
-            <div className={`${styles.item} ${styles.yellowed}`}>
-              <div className={styles.info__area}>
-                <div className={styles.top__area}>
-                  <div className={styles.card__title_area}>
-                    <p className={styles.title}>
-                      <span>이유디</span>의 UX 스터디
-                    </p>
-                    <span className={styles.term}>62일째 진행 중</span>
-                  </div>
-                  <div className={styles.point__label}>
-                    <img src={point} />
-                    <p>
-                      <span>310</span>P 획득
-                    </p>
-                  </div>
-                </div>
-                <p className={styles.description}>
-                  Slow And Steady Wins The Race!!
-                </p>
-              </div>
-              <div className={styles.emoji__area}>
-                <button type="button" className={styles.emoji__label}>
-                  <img src={smile} />
-                  37
-                </button>
-                <button type="button" className={styles.emoji__label}>
-                  <img src={smile} />
-                  37
-                </button>
-                <button type="button" className={styles.emoji__label}>
-                  <img src={smile} />
-                  37
-                </button>
-              </div>
-            </div>
-          </div>
+          <CardList
+            items={recentStudies}
+            className={`${styles.card__list} ${styles.recent__card__list}`}
+          />
         </div>
       </article>
       <article className={styles.block__card}>

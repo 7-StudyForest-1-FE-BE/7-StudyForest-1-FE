@@ -2,7 +2,7 @@ import styles from "./StudyViewPage.module.css";
 import smile from "../assets/ic_smile.svg";
 import arrowRight from "../assets/ic_arrow_right.svg";
 import point from "../assets/ic_point.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router";
 import mockData from "../mock.json";
 import HabitsTable from "../components/Study/HabitsTable";
@@ -12,6 +12,15 @@ import EmojiButton from "../components/Emoji/EmojiButton";
 
 function getStudyItem(studyId) {
   return mockData.find((study) => study.id === studyId);
+}
+
+function saveRecentlyViewedStudy(studyId) {
+  const stored = JSON.parse(localStorage.getItem("recentStudyIds")) || [];
+
+  const filtered = stored.filter((id) => id !== studyId);
+  const updated = [studyId, ...filtered].slice(0, 3); // 최신 3개
+
+  localStorage.setItem("recentStudyIds", JSON.stringify(updated));
 }
 
 function StudyViewPage() {
@@ -33,7 +42,11 @@ function StudyViewPage() {
   const handleModal = () => {
     setOpen((prev) => !prev);
   };
-
+  useEffect(() => {
+    if (studyId) {
+      saveRecentlyViewedStudy(studyId);
+    }
+  }, [studyId]);
   return (
     <>
       <div className={styles.block__card}>
