@@ -6,17 +6,41 @@ import pauseBtn from "../assets/ic_pause_btn.svg";
 import restartBtn from "../assets/ic_restart_btn.svg";
 import stop from "../assets/ic_stop.svg";
 import { useState, useEffect, useRef } from "react";
+import { useParams } from "react-router";
 import "./ConcentrationPage.css";
 
 function ConcentrationPage() {
+  const { studyId } = useParams(); // URL에서 studyId 가져오기
   const [time, setTime] = useState(25 * 60);
+  const [originalTime, setOriginalTime] = useState(25 * 60); // 원래 설정 시간 저장
   const [isRunning, setIsRunning] = useState(false);
-  const [hasStarted, setHasStarted] = useState(false); // 타이머가 한 번이라도 시작했는지 확인
-  const [isEditing, setIsEditing] = useState(false); // 시간 편집
-  const [editTime, setEditTime] = useState("25:00"); // 편집 중인 시간
-  const [isPaused, setIsPaused] = useState(false); // 일시정지
-  const [showPointMessage, setShowPointMessage] = useState(false); // 포인트 획득 메시지
+  const [hasStarted, setHasStarted] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editTime, setEditTime] = useState("25:00");
+  const [isPaused, setIsPaused] = useState(false);
+  const [showPointMessage, setShowPointMessage] = useState(false);
+  const [pointMessage, setPointMessage] = useState("");
+  const [studyPoints, setStudyPoints] = useState(0); // 현재 스터디 포인트
   const intervalRef = useRef(null);
+
+  // 스터디 정보 로드
+  useEffect(() => {
+    if (studyId) {
+      fetchStudyInfo();
+    }
+  }, [studyId]);
+
+  const fetchStudyInfo = async () => {
+    try {
+      const response = await fetch(`/api/studies/${studyId}`);
+      if (response.ok) {
+        const study = await response.json();
+        setStudyPoints(study.points);
+      }
+    } catch (error) {
+      console.error("스터디 정보 로드 실패:", error);
+    }
+  };
 
   const formatTime = (seconds) => {
     const isNegative = seconds < 0;
@@ -29,14 +53,60 @@ function ConcentrationPage() {
     return isNegative ? `-${timeString}` : timeString;
   };
 
-  // 타이머 색상 결정 함수
+  // 포인트 계산 함수
+  const calculatePoints = (completedSeconds) => {
+    const basePoints = 3;
+    const bonusPoints = Math.floor(completedSeconds / (10 * 60));
+    return basePoints + bonusPoints;
+  };
+
+  // 타이머 완료 시 포인트 저장
+  const saveTimerResult = async (duration) => {
+    if (!studyId) {
+      console.error("studyId가 없습니다.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/timers", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          duration: duration,
+          studyId: studyId,
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        const earnedPoints = result.earnedPoints;
+
+        // 포인트 업데이트
+        setStudyPoints((prev) => prev + earnedPoints);
+
+        setPointMessage(`${earnedPoints}포인트를 획득했습니다!`);
+        setShowPointMessage(true);
+
+        setTimeout(() => {
+          setShowPointMessage(false);
+        }, 3000);
+      } else {
+        console.error("타이머 결과 저장 실패");
+      }
+    } catch (error) {
+      console.error("API 호출 실패:", error);
+    }
+  };
+
   const getTimerColor = () => {
     if (time < 0) {
-      return "#818181"; // 마이너스 시간일 때 회색
+      return "#818181";
     } else if (time <= 10 && time >= 0) {
-      return "#F50E0E"; // 10초 이하일 때 빨간색
+      return "#F50E0E";
     }
-    return "#414141"; // 기본 색상
+    return "#414141";
   };
 
   const handleStart = () => {
@@ -46,9 +116,13 @@ function ConcentrationPage() {
     }
     setIsRunning(true);
     setHasStarted(true);
-    setIsEditing(false); // 시작 시 편집 모드 종료
+    setIsEditing(false);
     setIsPaused(false);
-    setShowPointMessage(false); // 메시지 숨기기
+    setShowPointMessage(false);
+
+    if (!hasStarted) {
+      setOriginalTime(time);
+    }
   };
 
   const handlePause = () => {
@@ -57,16 +131,14 @@ function ConcentrationPage() {
   };
 
   const handleStop = () => {
-    // 포인트 획득 메시지 표시
-    setShowPointMessage(true);
-    // 3초 후 메시지 자동 숨김
-    setTimeout(() => {
-      setShowPointMessage(false);
-    }, 3000);
+    const completedTime = Math.max(0, originalTime - Math.max(0, time));
+    if (hasStarted && completedTime > 0) {
+      saveTimerResult(completedTime);
+    }
 
-    // 리셋
     setIsRunning(false);
     setTime(25 * 60);
+    setOriginalTime(25 * 60);
     setHasStarted(false);
     setIsEditing(false);
     setEditTime("25:00");
@@ -75,8 +147,9 @@ function ConcentrationPage() {
 
   const handleRestart = () => {
     setIsRunning(false);
-    setTime(25 * 60); // 25분으로 리셋
-    setHasStarted(false); // 리셋 시 시작 상태 초기화
+    setTime(25 * 60);
+    setOriginalTime(25 * 60);
+    setHasStarted(false);
     setIsEditing(false);
     setEditTime("25:00");
     setIsPaused(false);
@@ -85,7 +158,6 @@ function ConcentrationPage() {
 
   const handleTimeClick = () => {
     if (!isRunning && !hasStarted) {
-      // 실행 중이 아니고 시작하지 않은 상태에서만 편집 가능
       setIsEditing(true);
       setEditTime(formatTime(time));
     }
@@ -93,7 +165,6 @@ function ConcentrationPage() {
 
   const handleTimeChange = (e) => {
     const value = e.target.value;
-    // MM:SS 형식 검증
     if (/^\d{0,2}:\d{0,2}$/.test(value) || /^\d{0,2}$/.test(value)) {
       setEditTime(value);
     }
@@ -105,18 +176,16 @@ function ConcentrationPage() {
       const minutes = parseInt(parts[0], 10) || 0;
       const seconds = parseInt(parts[1], 10) || 0;
 
-      // 0:00 ~ 60:00 범위 체크
       if (minutes >= 0 && minutes <= 60 && seconds >= 0 && seconds <= 59) {
         const totalSeconds = minutes * 60 + seconds;
         setTime(totalSeconds);
+        setOriginalTime(totalSeconds);
         setIsEditing(false);
       } else {
-        // 범위 벗어나면 기본값으로 되돌리기
         setEditTime(formatTime(time));
         setIsEditing(false);
       }
     } else {
-      // 형식이 잘못되면 기본값으로 되돌리기
       setEditTime(formatTime(time));
       setIsEditing(false);
     }
@@ -164,7 +233,7 @@ function ConcentrationPage() {
             <h2 className="point">현재까지 획득한 포인트</h2>
             <div className="point__tag">
               <img src={leaf} alt="leaf" className="point__icon" />
-              <span className="point__text">310P 획득</span>
+              <span className="point__text">{studyPoints}P 획득</span>
             </div>
           </div>
         </div>
@@ -256,7 +325,7 @@ function ConcentrationPage() {
           {showPointMessage && (
             <div className="status__message status__message--point">
               <span className="status__icon">🎉</span>
-              <span className="status__text">50포인트를 획득했습니다!</span>
+              <span className="status__text">{pointMessage}</span>
             </div>
           )}
         </div>
