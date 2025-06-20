@@ -6,3 +6,26 @@ export const getStudyList = async ({ offset = 0, limit = 6 }) => {
   const data = await response.json();
   return data;
 };
+
+export const getStudyItem = async (studyId) => {
+  const response = await fetch(`http://localhost:3000/api/studies/${studyId}`);
+  if (!response.ok) throw new Error("개별 스터디 상세보기 실패");
+  const data = await response.json();
+  return data;
+};
+
+export const checkStudyPassword = async (studyId, password) => {
+  const response = await fetch(
+    `http://localhost:3000/api/studies/${studyId}/check-password`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    }
+  );
+  if (!res.ok) {
+    throw new Error("비밀번호 확인 실패");
+  }
+  const data = await response.json();
+  return data;
+};
