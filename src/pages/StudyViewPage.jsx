@@ -3,7 +3,7 @@ import smile from "../assets/ic_smile.svg";
 import arrowRight from "../assets/ic_arrow_right.svg";
 import point from "../assets/ic_point.svg";
 import { useState, useEffect } from "react";
-import { Link, Navigate, useParams } from "react-router";
+import { Link, Navigate, useParams, useNavigate } from "react-router";
 import mockData from "../mock.json";
 import HabitsTable from "../components/Study/HabitsTable";
 import EmojiPicker from "emoji-picker-react";
@@ -32,8 +32,7 @@ function StudyViewPage() {
   };
 
   const { studyId } = useParams();
-  console.log(studyId);
-
+  const navigate = useNavigate();
   const [item, setItem] = useState({});
   const handleFetch = async () => {
     const study = await getStudyItem(studyId);
@@ -58,8 +57,9 @@ function StudyViewPage() {
       }
       setIsModalOpen(false);
     } catch (err) {
+      console.error("비밀번호 확인 에러:", err);
       setPwError(true);
-      setTimeout(() => setPwError(false), 3000);
+      setTimeout(() => setPwError(false), 2000);
     }
   };
 
@@ -181,7 +181,7 @@ function StudyViewPage() {
         />
       )}
       {pwError && (
-        <div className="toast">
+        <div className={styles.toast}>
           <p>비밀번호가 일치하지 않습니다. 다시 입력해주세요.</p>
         </div>
       )}

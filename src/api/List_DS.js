@@ -15,17 +15,21 @@ export const getStudyItem = async (studyId) => {
 };
 
 export const checkStudyPassword = async (studyId, password) => {
-  const response = await fetch(
+  const res = await fetch(
     `http://localhost:3000/api/studies/${studyId}/check-password`,
     {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ password }),
     }
   );
+
   if (!res.ok) {
-    throw new Error("비밀번호 확인 실패");
+    let message = "비밀번호 확인 실패";
+    throw new Error(message);
   }
-  const data = await response.json();
-  return data;
+
+  return await res.json();
 };
