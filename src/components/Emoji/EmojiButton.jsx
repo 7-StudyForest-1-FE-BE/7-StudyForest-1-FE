@@ -6,7 +6,7 @@ function EmojiButton({ reaction }) {
   return (
     <button type="button" className={styles.emoji__label}>
       <span>{emoji}</span>
-      <span>{count}</span>
+      <span>{count || 0}</span>
     </button>
   );
 }

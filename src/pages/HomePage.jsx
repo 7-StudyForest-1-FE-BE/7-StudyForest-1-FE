@@ -1,11 +1,10 @@
 import styles from "./HomePage.module.css";
-import smile from "../assets/ic_smile.svg";
-import point from "../assets/ic_point.svg";
 import search from "../assets/ic_search.svg";
 import toggle from "../assets/ic_toggle.svg";
 import mockData from "../mock.json";
 import CardList from "../components/Study/CardList";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
+import { getStudyList } from "../api/List_DS.js";
 
 function HomePage() {
   const [recentStudies, setRecentStudies] = useState([]);
@@ -13,10 +12,30 @@ function HomePage() {
     key: "latest",
     label: "최신순",
   });
-  const [items, setItems] = useState(mockData);
+  const [items, setItems] = useState([]);
+  const [offset, setOffset] = useState(0);
+  const [limit] = useState(6);
+  const [hasMore, setHasMore] = useState(true);
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [keyword, setKeyword] = useState("");
+
+  const handleFetch = async () => {
+    try {
+      const studyList = await getStudyList({ offset, limit });
+      console.log("📦 받은 studyList.length:", studyList.length); // ← 이거 확인
+      console.log("🔢 현재 offset:", offset);
+      setItems((prev) => [...prev, ...studyList]);
+
+      if (studyList.length < limit) {
+        setHasMore(false);
+      }
+      // 현재까지 얼마나 받아왔는지
+      setOffset((prev) => prev + limit);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const filteredItems = useMemo(() => {
     return items.filter((item) =>
@@ -53,8 +72,12 @@ function HomePage() {
     e.preventDefault();
     setKeyword(inputValue);
   };
-
+  const isFetchedRef = useRef(false);
   useEffect(() => {
+    if (!isFetchedRef.current) {
+      handleFetch();
+      isFetchedRef.current = true;
+    }
     const recentIds = JSON.parse(localStorage.getItem("recentStudyIds")) || [];
     const matched = recentIds
       .map((id) => mockData.find((study) => study.id === id))
@@ -88,7 +111,7 @@ function HomePage() {
                 <div className="input__row">
                   <dl>
                     <dt className="sr__only">
-                      <label for="password">검색어</label>
+                      <label htmlFor="keyword">검색어</label>
                     </dt>
                     <dd className="">
                       <div
@@ -162,11 +185,17 @@ function HomePage() {
             items={sortedItems}
             className={`${styles.card__list} ${styles.entire__card__list}`}
           />
-          <div className={styles.block__btns}>
-            <button type="button" className={`${styles.btn__more} primary`}>
-              더보기
-            </button>
-          </div>
+          {hasMore && (
+            <div className={styles.block__btns}>
+              <button
+                type="button"
+                className={`${styles.btn__more} primary`}
+                onClick={handleFetch}
+              >
+                더보기
+              </button>
+            </div>
+          )}
         </div>
       </article>
     </>
