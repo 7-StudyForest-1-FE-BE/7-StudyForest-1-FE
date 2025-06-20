@@ -158,6 +158,21 @@
   color: #818181;
   height: 420px;
 }
+
+.toast {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  background: #fde0e9;
+  border-radius: 12px;
+  color: #f50e0e;
+  white-space: nowrap;
+  z-index: 15;
+}
 @media (max-width: 1199px) {
   .block__card {
     margin: 16px auto;

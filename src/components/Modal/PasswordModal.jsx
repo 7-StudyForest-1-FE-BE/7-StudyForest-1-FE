@@ -3,7 +3,7 @@ import visibilityOff from "../../assets/ic_visibility_off.png";
 import visibilityOn from "../../assets/ic_visibility_on.png";
 import { useState } from "react";
 
-function PasswordModal({ title, pw, onConfirm, onClose }) {
+function PasswordModal({ title, onConfirm, onClose }) {
   const [inputPw, setInputPw] = useState("");
   const handleClose = () => {
     onClose();
@@ -33,13 +33,13 @@ function PasswordModal({ title, pw, onConfirm, onClose }) {
                 <dd className="">
                   <div className="input__box">
                     <input
-                      type="text"
+                      type="password"
                       id="password"
                       name="password"
-                      value={pw}
+                      value={inputPw}
                       onChange={(e) => setInputPw(e.target.value)}
                       placeholder="비밀번호를 입력해주세요"
-                      autocomplete="off"
+                      autoComplete="off"
                     />
                     <button type="button" className="btn__visible">
                       <img src={visibilityOff} />
