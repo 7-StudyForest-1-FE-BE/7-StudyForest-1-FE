@@ -9,10 +9,7 @@ import HabitsTable from "../components/Study/HabitsTable";
 import EmojiPicker from "emoji-picker-react";
 import PasswordModal from "../components/Modal/PasswordModal";
 import EmojiButton from "../components/Emoji/EmojiButton";
-
-function getStudyItem(studyId) {
-  return mockData.find((study) => study.id === studyId);
-}
+import { getStudyItem, checkStudyPassword } from "../api/List_DS.js";
 
 function saveRecentlyViewedStudy(studyId) {
   const stored = JSON.parse(localStorage.getItem("recentStudyIds")) || [];
@@ -24,15 +21,6 @@ function saveRecentlyViewedStudy(studyId) {
 }
 
 function StudyViewPage() {
-  const { studyId } = useParams();
-  console.log(studyId);
-
-  const item = getStudyItem(studyId);
-  console.log(item);
-  if (!item) {
-    return <Navigate to={"/"} />;
-  }
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEmojiOpen, setIsEmojiOpen] = useState(false);
   const [pwError, setPwError] = useState(false);
@@ -42,18 +30,56 @@ function StudyViewPage() {
   const handleModal = () => {
     setOpen((prev) => !prev);
   };
+
+  const { studyId } = useParams();
+  console.log(studyId);
+
+  const [item, setItem] = useState({});
+  const handleFetch = async () => {
+    const study = await getStudyItem(studyId);
+    console.log("study:" + study);
+    if (!item) {
+      return <Navigate to={"/"} />;
+    }
+    setItem(study);
+  };
+
+  const handlePasswordCheck = async (password) => {
+    try {
+      await checkStudyPassword(studyId, password);
+
+      // 성공 시 모달 닫고 이동
+      if (isModalOpen === "modify") {
+        navigate(`/study/${studyId}/modify`);
+      } else if (isModalOpen === "habits") {
+        navigate(`/study/${studyId}/habits`);
+      } else if (isModalOpen === "concentration") {
+        navigate(`/study/${studyId}/concentration`);
+      }
+      setIsModalOpen(false);
+    } catch (err) {
+      setPwError(true);
+      setTimeout(() => setPwError(false), 3000);
+    }
+  };
+
   useEffect(() => {
     if (studyId) {
       saveRecentlyViewedStudy(studyId);
+      handleFetch();
     }
   }, [studyId]);
+
+  if (item === undefined) return <p>로딩 중...</p>;
+  if (item === null) return <Navigate to="/" />;
+
   return (
     <>
       <div className={styles.block__card}>
         <div className={styles.card__header}>
           <div className={styles.util}>
             <div className={styles.emoji__area}>
-              {item.emojiReactions.map((reaction) => {
+              {item.emojis?.map((reaction) => {
                 return <EmojiButton reaction={reaction} />;
               })}
               <div className={styles.picker__area}>
@@ -73,7 +99,11 @@ function StudyViewPage() {
                 </button>
               </li>
               <li>
-                <button type="button" className={"primary"}>
+                <button
+                  type="button"
+                  className={"primary"}
+                  onClick={() => setIsModalOpen("concentration")}
+                >
                   수정하기
                 </button>
               </li>
@@ -88,16 +118,22 @@ function StudyViewPage() {
               <div>
                 <ul className={styles.study__detail__area}>
                   <li>
-                    <button type="button" onClick={handleModal}>
+                    <button
+                      type="button"
+                      onClick={() => setIsModalOpen("habits")}
+                    >
                       오늘의 습관
                       <img src={arrowRight} />
                     </button>
                   </li>
                   <li>
-                    <Link to="/concentration/:id">
+                    <button
+                      type="button"
+                      onClick={() => setIsModalOpen("concentration")}
+                    >
                       오늘의 집중
                       <img src={arrowRight} />
-                    </Link>
+                    </button>
                   </li>
                 </ul>
               </div>
@@ -136,7 +172,14 @@ function StudyViewPage() {
           )}
         </div>
       </div>
-      {isModalOpen && <PasswordModal />}
+      {isModalOpen !== false && (
+        <PasswordModal
+          title={item.title}
+          pw={item.password}
+          onConfirm={handlePasswordCheck}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
       {pwError && (
         <div className="toast">
           <p>비밀번호가 일치하지 않습니다. 다시 입력해주세요.</p>
