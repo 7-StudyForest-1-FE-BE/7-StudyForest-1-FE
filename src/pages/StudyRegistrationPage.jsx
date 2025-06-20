@@ -105,17 +105,38 @@ function StudyRegistrationPage() {
   const [showPass, setShowPass] = useState(false);
   const [showPassCheck, setShowPassCheck] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
-    const formData = {
-      nickName: values.nickName,
-      studyName: values.studyName,
-      introduce: values.introduce,
-      backgroundId: selectedBgId,
-      password: values.password,
-    };
-    console.log('폼 데이터 전송:', formData);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!isFormValid) {
+      alert('입력값을 확인해주세요.');
+      return;
+    }
+    try {
+      const res = await fetch(`${API_URL}/api/studies`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: values.studyName,
+          nickname: values.nickName,
+          description: values.introduce,
+          password: values.password,
+          bg: selectedBgId ?? 0,
+        }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || '서버 오류');
+      }
+      alert('스터디가 생성되었습니다!');
+      // TODO: 폼 값 초기화, 페이지 이동 등 후처리 추가 가능
+    } catch (err) {
+      alert('스터디 생성 실패: ' + err.message);
+    }
   };
 
   return (
