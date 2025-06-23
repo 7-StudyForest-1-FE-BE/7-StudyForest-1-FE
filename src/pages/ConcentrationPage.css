@@ -103,7 +103,7 @@
 .point__tag {
   display: flex;
   align-items: center;
-  padding: auto 12px;
+  padding: 0px 12px 0px 8px;
   gap: 4px;
   border-radius: 50px;
   border: 1px solid rgba(0, 0, 0, 0.1);
