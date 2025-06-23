@@ -6,8 +6,8 @@ import pauseBtn from "../assets/ic_pause_btn.svg";
 import restartBtn from "../assets/ic_restart_btn.svg";
 import stop from "../assets/ic_stop.svg";
 import { useState, useEffect, useRef } from "react";
-import { Link, useParams, Navigate } from "react-router";
-import { getStudyItem } from "../api/List_DS.js";
+import { Link, useParams } from "react-router";
+import { getStudyItem } from "../api/List_DS";
 import "./ConcentrationPage.css";
 
 function ConcentrationPage() {
@@ -43,6 +43,13 @@ function ConcentrationPage() {
       const study = await getStudyItem(studyId);
 
       console.log("스터디 정보:", study); // 디버깅용
+
+      // StudyViewPage와 동일한 null 체크
+      if (!study) {
+        setError("스터디를 찾을 수 없습니다.");
+        return;
+      }
+
       setStudyPoints(study.points || 0);
       setStudyInfo({
         nickname: study.nickname || "",
@@ -226,9 +233,15 @@ function ConcentrationPage() {
     return () => clearInterval(intervalRef.current);
   }, [isRunning]);
 
-  // studyId가 없으면 홈으로 리다이렉트
+  // studyId가 없는 경우 처리
   if (!studyId) {
-    return <Navigate to="/" />;
+    return (
+      <div className="concentration">
+        <div className="concentration__container">
+          <div className="error-message">스터디 ID가 없습니다.</div>
+        </div>
+      </div>
+    );
   }
 
   // 로딩 상태 처리
@@ -242,9 +255,19 @@ function ConcentrationPage() {
     );
   }
 
-  // 에러 상태 처리 - 스터디가 존재하지 않으면 홈으로 리다이렉트
+  // 에러 상태 처리
   if (error) {
-    return <Navigate to="/" />;
+    return (
+      <div className="concentration">
+        <div className="concentration__container">
+          <div className="error-message">
+            스터디 정보를 불러오는데 실패했습니다: {error}
+            <br />
+            <Link to="/">홈으로 돌아가기</Link>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -261,7 +284,7 @@ function ConcentrationPage() {
             </h1>
             <div className="button">
               <button className="habit__btn">
-                <Link to={`/study/${studyId}/habits`}>
+                <Link to={studyId ? `/study/${studyId}/habits` : "/habit"}>
                   오늘의 습관
                   <img src={arrow} alt="arrow" className="arrow__icon" />
                 </Link>
