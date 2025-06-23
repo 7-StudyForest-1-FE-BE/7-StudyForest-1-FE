@@ -12,7 +12,7 @@ function BackgroundSelector({ selectedBgId, onSelect }) {
           <button
             key={idx}
             type="button"
-            className={`${styles.background__item} ${selectedBgId === idx ? styles.selected : ''}`}
+            className={`${styles.background__item} ${selectedBgId === idx + 1 ? styles.selected : ''}`}
             style={
               bg.type === 'color'
                 ? { background: bg.value }
@@ -20,9 +20,9 @@ function BackgroundSelector({ selectedBgId, onSelect }) {
                 ? { backgroundImage: `url(${bg.value})` }
                 : {}
             }
-            onClick={() => onSelect(idx)}
+            onClick={() => onSelect(idx + 1)}
           >
-            {selectedBgId === idx && <img src={pawIcon} alt="선택됨" className={styles.paw__icon} />}
+            {selectedBgId === idx + 1 && <img src={pawIcon} alt="선택됨" className={styles.paw__icon} />}
           </button>
         ))}
       </div>
