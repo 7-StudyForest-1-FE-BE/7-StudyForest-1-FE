@@ -21,7 +21,10 @@ createRoot(document.getElementById("root")).render(
           <Route path={"/study/:id/edit"} element={<StudyEditPage />} />
           <Route path={"/registration"} element={<StudyRegistrationPage />} />
           <Route path={"/habit"} element={<HabitPage />} />
-          <Route path={"/concentration"} element={<ConcentrationPage />} />
+          <Route
+            path={"/study/:studyId/concentration"}
+            element={<ConcentrationPage />}
+          />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </App>
