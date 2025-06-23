@@ -6,14 +6,13 @@ import pauseBtn from "../assets/ic_pause_btn.svg";
 import restartBtn from "../assets/ic_restart_btn.svg";
 import stop from "../assets/ic_stop.svg";
 import { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router";
-import { Link } from "react-router";
+import { Link, useParams } from "react-router";
 import "./ConcentrationPage.css";
 
 function ConcentrationPage() {
-  const { studyId } = useParams();
+  const { studyId } = useParams(); // URL에서 studyId 가져오기
   const [time, setTime] = useState(25 * 60);
-  const [originalTime, setOriginalTime] = useState(25 * 60);
+  const [originalTime, setOriginalTime] = useState(25 * 60); // 원래 설정 시간 저장
   const [isRunning, setIsRunning] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -21,7 +20,8 @@ function ConcentrationPage() {
   const [isPaused, setIsPaused] = useState(false);
   const [showPointMessage, setShowPointMessage] = useState(false);
   const [pointMessage, setPointMessage] = useState("");
-  const [studyPoints, setStudyPoints] = useState(0);
+  const [studyPoints, setStudyPoints] = useState(0); // 현재 스터디 포인트
+  const [studyInfo, setStudyInfo] = useState({ nickname: "", title: "" }); // 스터디 정보 추가
   const intervalRef = useRef(null);
 
   // 스터디 정보 로드
@@ -36,7 +36,12 @@ function ConcentrationPage() {
       const response = await fetch(`/api/studies/${studyId}`);
       if (response.ok) {
         const study = await response.json();
+        console.log("스터디 정보:", study); // 디버깅용
         setStudyPoints(study.points);
+        setStudyInfo({
+          nickname: study.nickname || "",
+          title: study.title || "",
+        }); // nickname과 title 저장
       }
     } catch (error) {
       console.error("스터디 정보 로드 실패:", error);
@@ -54,14 +59,14 @@ function ConcentrationPage() {
     return isNegative ? `-${timeString}` : timeString;
   };
 
-  // 포인트 계산
+  // 포인트 계산 함수
   const calculatePoints = (completedSeconds) => {
     const basePoints = 3;
     const bonusPoints = Math.floor(completedSeconds / (10 * 60));
     return basePoints + bonusPoints;
   };
 
-  // 포인트 저장
+  // 타이머 완료 시 포인트 저장
   const saveTimerResult = async (duration) => {
     if (!studyId) {
       console.error("studyId가 없습니다.");
@@ -218,7 +223,13 @@ function ConcentrationPage() {
       <div className="concentration__container">
         <div className="concentration__header">
           <div className="header__title">
-            <h1 className="title__txt">연우의 개발공장</h1>
+            <h1 className="title__txt">
+              {studyInfo.nickname || studyInfo.title
+                ? `${studyInfo.nickname || "사용자"}의 ${
+                    studyInfo.title || "스터디"
+                  }`
+                : "스터디 로딩 중..."}
+            </h1>
             <div className="button">
               <button className="habit__btn">
                 <Link to={"/habit"}>
@@ -227,7 +238,7 @@ function ConcentrationPage() {
                 </Link>
               </button>
               <button className="home__btn">
-                <Link to={"/"}>
+                <Link to={""}>
                   홈
                   <img src={arrow} alt="arrow" className="arrow__icon" />
                 </Link>
