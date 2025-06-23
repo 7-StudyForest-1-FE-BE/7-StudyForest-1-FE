@@ -1,0 +1,71 @@
+.container {
+  max-width: 696px;
+  min-height: 1171px;
+  background-color: #fff;
+  border-radius: 16px;
+  margin: 24px auto 0px auto;
+  padding: 24px 24px 40px 24px;
+  box-sizing: border-box;
+  margin-bottom: 40px;
+}
+
+.container h2 {
+  color: #414141;
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 24px;
+}
+
+.submit__btn {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+  max-width: 648px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.study__create__btn {
+  cursor: pointer;
+  background-color: #99c08e;
+  max-width: 648px;
+  width: 100%;
+  height: 58px;
+  padding: 16px 8px;
+  border-radius: 16px;
+  border: 0px;
+  font-size: 18px;
+  font-weight: 400;
+  color: #fff;
+  transition: background 0.5s;
+}
+
+.study__create__btn:disabled,
+.study__create__btn.disabled {
+  background-color: gray;
+  color: #999;
+  cursor: not-allowed;
+  border: none;
+}
+
+@media (max-width: 1199px) {
+  .container {
+    padding: 16px 16px 20px 16px;
+  }
+}
+
+@media (max-width: 743px) {
+  .container {
+    min-width: 344px;
+  }
+  .container h2 {
+    font-size: 16px;
+  }
+  .study__create label {
+    font-size: 16px;
+  }
+  .background__item {
+    width: 148px;
+    height: 148px;
+  }
+}
