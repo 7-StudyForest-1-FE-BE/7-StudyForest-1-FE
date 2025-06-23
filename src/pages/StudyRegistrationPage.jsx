@@ -4,6 +4,7 @@ import TextAreaField from '../components/Registation/TextAreaField';
 import InputField from '../components/Registation/InputField';
 import PasswordField from '../components/Registation/passwordField';
 import BackgroundSelector from '../components/Registation/BackgroundSelector';
+import { useNavigate } from 'react-router-dom';
 
 const MIN_PASSWORD_LENGTH = 4;
 // const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).*$/;
@@ -107,6 +108,8 @@ function StudyRegistrationPage() {
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isFormValid) {
@@ -132,8 +135,10 @@ function StudyRegistrationPage() {
         const errorData = await res.json();
         throw new Error(errorData.message || '서버 오류');
       }
+      const result = await res.json();
       alert('스터디가 생성되었습니다!');
-      // TODO: 폼 값 초기화, 페이지 이동 등 후처리 추가 가능
+      // console.log(result);
+      navigate(`/view/${result._id}`);
     } catch (err) {
       alert('스터디 생성 실패: ' + err.message);
     }
