@@ -6,7 +6,8 @@ import pauseBtn from "../assets/ic_pause_btn.svg";
 import restartBtn from "../assets/ic_restart_btn.svg";
 import stop from "../assets/ic_stop.svg";
 import { useState, useEffect, useRef } from "react";
-import { Link, useParams } from "react-router";
+import { Link, useParams, Navigate } from "react-router";
+import { getStudyItem } from "../api/List_DS.js";
 import "./ConcentrationPage.css";
 
 function ConcentrationPage() {
@@ -22,6 +23,8 @@ function ConcentrationPage() {
   const [pointMessage, setPointMessage] = useState("");
   const [studyPoints, setStudyPoints] = useState(0); // 현재 스터디 포인트
   const [studyInfo, setStudyInfo] = useState({ nickname: "", title: "" }); // 스터디 정보 추가
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const [error, setError] = useState(null); // 에러 상태 추가
   const intervalRef = useRef(null);
 
   // 스터디 정보 로드
@@ -33,18 +36,23 @@ function ConcentrationPage() {
 
   const fetchStudyInfo = async () => {
     try {
-      const response = await fetch(`/api/studies/${studyId}`);
-      if (response.ok) {
-        const study = await response.json();
-        console.log("스터디 정보:", study); // 디버깅용
-        setStudyPoints(study.points);
-        setStudyInfo({
-          nickname: study.nickname || "",
-          title: study.title || "",
-        }); // nickname과 title 저장
-      }
+      setLoading(true);
+      setError(null);
+
+      // API 함수 사용
+      const study = await getStudyItem(studyId);
+
+      console.log("스터디 정보:", study); // 디버깅용
+      setStudyPoints(study.points || 0);
+      setStudyInfo({
+        nickname: study.nickname || "",
+        title: study.title || "",
+      });
     } catch (error) {
       console.error("스터디 정보 로드 실패:", error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -74,7 +82,7 @@ function ConcentrationPage() {
     }
 
     try {
-      const response = await fetch("/api/timers", {
+      const response = await fetch(`http://localhost:3000/api/timers`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -218,6 +226,27 @@ function ConcentrationPage() {
     return () => clearInterval(intervalRef.current);
   }, [isRunning]);
 
+  // studyId가 없으면 홈으로 리다이렉트
+  if (!studyId) {
+    return <Navigate to="/" />;
+  }
+
+  // 로딩 상태 처리
+  if (loading) {
+    return (
+      <div className="concentration">
+        <div className="concentration__container">
+          <div className="loading-message">스터디 정보를 불러오는 중...</div>
+        </div>
+      </div>
+    );
+  }
+
+  // 에러 상태 처리 - 스터디가 존재하지 않으면 홈으로 리다이렉트
+  if (error) {
+    return <Navigate to="/" />;
+  }
+
   return (
     <div className="concentration">
       <div className="concentration__container">
@@ -228,17 +257,17 @@ function ConcentrationPage() {
                 ? `${studyInfo.nickname || "사용자"}의 ${
                     studyInfo.title || "스터디"
                   }`
-                : "스터디 로딩 중..."}
+                : "스터디"}
             </h1>
             <div className="button">
               <button className="habit__btn">
-                <Link to={"/habit"}>
+                <Link to={`/study/${studyId}/habits`}>
                   오늘의 습관
                   <img src={arrow} alt="arrow" className="arrow__icon" />
                 </Link>
               </button>
               <button className="home__btn">
-                <Link to={""}>
+                <Link to={"/"}>
                   홈
                   <img src={arrow} alt="arrow" className="arrow__icon" />
                 </Link>
