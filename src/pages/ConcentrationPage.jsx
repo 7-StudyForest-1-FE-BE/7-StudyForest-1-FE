@@ -6,7 +6,7 @@ import pauseBtn from "../assets/ic_pause_btn.svg";
 import restartBtn from "../assets/ic_restart_btn.svg";
 import stop from "../assets/ic_stop.svg";
 import { useState, useEffect, useRef } from "react";
-import { Link, useParams } from "react-router";
+import { Link, useParams } from "react-router-dom";
 import { getStudyItem } from "../api/List_DS";
 import "./ConcentrationPage.css";
 
