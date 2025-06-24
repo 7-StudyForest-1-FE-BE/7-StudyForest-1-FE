@@ -1,7 +1,7 @@
-import React from 'react';
-import styles from './BackgroundSelector.module.css';
-import pawIcon from '../../assets/sticker/gray_bg_selected.svg';
-import bgThemes from '../../data/bgThemes';
+import React from "react";
+import styles from "./BackgroundSelector.module.css";
+import pawIcon from "../../assets/sticker/gray_bg_selected.svg";
+import bgThemes from "../../data/bgThemes";
 
 function BackgroundSelector({ selectedBgId, onSelect }) {
   return (
@@ -12,17 +12,21 @@ function BackgroundSelector({ selectedBgId, onSelect }) {
           <button
             key={idx}
             type="button"
-            className={`${styles.background__item} ${selectedBgId === idx ? styles.selected : ''}`}
+            className={`${styles.background__item} ${
+              selectedBgId === idx + 1 ? styles.selected : ""
+            }`}
             style={
-              bg.type === 'color'
+              bg.type === "color"
                 ? { background: bg.value }
-                : bg.type === 'image'
+                : bg.type === "image"
                 ? { backgroundImage: `url(${bg.value})` }
                 : {}
             }
-            onClick={() => onSelect(idx)}
+            onClick={() => onSelect(idx + 1)}
           >
-            {selectedBgId === idx && <img src={pawIcon} alt="선택됨" className={styles.paw__icon} />}
+            {selectedBgId === idx + 1 && (
+              <img src={pawIcon} alt="선택됨" className={styles.paw__icon} />
+            )}
           </button>
         ))}
       </div>

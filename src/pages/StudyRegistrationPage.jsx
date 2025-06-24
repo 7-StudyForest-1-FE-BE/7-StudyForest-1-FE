@@ -1,28 +1,29 @@
-import React, { useState } from 'react';
-import styles from './StudyRegistrationPage.module.css';
-import TextAreaField from '../components/Registation/TextAreaField';
-import InputField from '../components/Registation/InputField';
-import PasswordField from '../components/Registation/passwordField';
-import BackgroundSelector from '../components/Registation/BackgroundSelector';
+import React, { useState } from "react";
+import styles from "./StudyRegistrationPage.module.css";
+import TextAreaField from "../components/Registation/TextAreaField";
+import InputField from "../components/Registation/InputField";
+import PasswordField from "../components/Registation/passwordField";
+import BackgroundSelector from "../components/Registation/BackgroundSelector";
+import { useNavigate } from "react-router-dom";
 
 const MIN_PASSWORD_LENGTH = 4;
 // const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).*$/;
 
 function StudyRegistrationPage() {
   const [values, setValues] = useState({
-    nickName: '',
-    studyName: '',
-    introduce: '',
-    password: '',
-    passCheck: '',
+    nickName: "",
+    studyName: "",
+    introduce: "",
+    password: "",
+    passCheck: "",
   });
 
   const [errors, setErrors] = useState({
-    nickName: '',
-    studyName: '',
-    introduce: '',
-    password: '',
-    passCheck: '',
+    nickName: "",
+    studyName: "",
+    introduce: "",
+    password: "",
+    passCheck: "",
   });
 
   const [touched, setTouched] = useState({
@@ -34,41 +35,41 @@ function StudyRegistrationPage() {
   });
 
   const validateField = (name, value) => {
-    if (name === 'nickName') {
+    if (name === "nickName") {
       if (!value.trim()) {
-        return '*닉네임을 입력해 주세요';
+        return "*닉네임을 입력해 주세요";
       }
-    } else if (name === 'studyName') {
+    } else if (name === "studyName") {
       if (!value.trim()) {
-        return '*스터디 이름을 입력해 주세요';
+        return "*스터디 이름을 입력해 주세요";
       }
-    } else if (name === 'password') {
+    } else if (name === "password") {
       return validatePassword(value);
-    } else if (name === 'passCheck') {
+    } else if (name === "passCheck") {
       return validatePassCheck(value, values.password);
     }
-    return '';
+    return "";
   };
 
   const validatePassword = (value) => {
     if (!value.trim()) {
-      return '*비밀번호를 입력해 주세요';
+      return "*비밀번호를 입력해 주세요";
     } else if (value.length < MIN_PASSWORD_LENGTH) {
       return `*비밀번호는 ${MIN_PASSWORD_LENGTH}자 이상이어야 합니다`;
     } //else if (!PASSWORD_REGEX.test(value)) {
     //return '*영문, 숫자, 특수문자를 모두 포함해야 합니다';
     //}
-    return '';
+    return "";
   };
 
   const validatePassCheck = (value, password) => {
     if (!value.trim()) {
-      return '*비밀번호 확인란을 입력해 주세요';
+      return "*비밀번호 확인란을 입력해 주세요";
     }
     if (value !== password) {
-      return '*비밀번호가 일치하지 않습니다';
+      return "*비밀번호가 일치하지 않습니다";
     }
-    return '';
+    return "";
   };
 
   const handleChange = (e) => {
@@ -92,11 +93,11 @@ function StudyRegistrationPage() {
   const [selectedBgId, setSelectedBgId] = useState(null);
 
   const isFormValid =
-    values.nickName.trim() !== '' &&
-    values.studyName.trim() !== '' &&
+    values.nickName.trim() !== "" &&
+    values.studyName.trim() !== "" &&
     selectedBgId !== null &&
-    values.password.trim() !== '' &&
-    values.passCheck.trim() !== '' &&
+    values.password.trim() !== "" &&
+    values.passCheck.trim() !== "" &&
     !errors.nickName &&
     !errors.studyName &&
     !errors.password &&
@@ -105,19 +106,20 @@ function StudyRegistrationPage() {
   const [showPass, setShowPass] = useState(false);
   const [showPassCheck, setShowPassCheck] = useState(false);
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isFormValid) {
-      alert('입력값을 확인해주세요.');
+      alert("입력값을 확인해주세요.");
       return;
     }
     try {
       const res = await fetch(`${API_URL}/api/studies`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           title: values.studyName,
@@ -130,19 +132,25 @@ function StudyRegistrationPage() {
 
       if (!res.ok) {
         const errorData = await res.json();
-        throw new Error(errorData.message || '서버 오류');
+        throw new Error(errorData.message || "서버 오류");
       }
-      alert('스터디가 생성되었습니다!');
-      // TODO: 폼 값 초기화, 페이지 이동 등 후처리 추가 가능
+      const result = await res.json();
+      alert("스터디가 생성되었습니다!");
+      // console.log(result);
+      navigate(`/view/${result._id}`);
     } catch (err) {
-      alert('스터디 생성 실패: ' + err.message);
+      alert("스터디 생성 실패: " + err.message);
     }
   };
 
   return (
     <div className={styles.container}>
       <h2>스터디 만들기</h2>
-      <form className={styles.study__create} method="POST" onSubmit={handleSubmit}>
+      <form
+        className={styles.study__create}
+        method="POST"
+        onSubmit={handleSubmit}
+      >
         <InputField
           label="닉네임"
           id="nickName"
@@ -179,7 +187,10 @@ function StudyRegistrationPage() {
           touched={touched.introduce}
         />
 
-        <BackgroundSelector selectedBgId={selectedBgId} onSelect={setSelectedBgId} />
+        <BackgroundSelector
+          selectedBgId={selectedBgId}
+          onSelect={setSelectedBgId}
+        />
 
         <PasswordField
           label="비밀번호"
@@ -211,7 +222,9 @@ function StudyRegistrationPage() {
 
         <div className={styles.submit__btn}>
           <button
-            className={`${styles.study__create__btn} ${!isFormValid ? styles.disabled : ''} `}
+            className={`${styles.study__create__btn} ${
+              !isFormValid ? styles.disabled : ""
+            } `}
             type="submit"
             disabled={!isFormValid}
           >

@@ -10,16 +10,16 @@ import EmojiPicker from "emoji-picker-react";
 import PasswordModal from "../components/Modal/PasswordModal";
 import EmojiButton from "../components/Emoji/EmojiButton";
 import { getStudyItem, checkStudyPassword } from "../api/List_DS.js";
+n;
 
 function saveRecentlyViewedStudy(studyId) {
   const stored = JSON.parse(localStorage.getItem("recentStudyIds")) || [];
 
-  const filtered = stored.filter((id) => id !== studyId);
-  const updated = [studyId, ...filtered].slice(0, 3); // 최신 3개
+  const filtered = stored.filter((id) => id !== studyId); // 중복 제거
+  const updated = [studyId, ...filtered].slice(0, 3); // 최대 3개만 저장
 
   localStorage.setItem("recentStudyIds", JSON.stringify(updated));
 }
-
 function StudyViewPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEmojiOpen, setIsEmojiOpen] = useState(false);
@@ -49,7 +49,7 @@ function StudyViewPage() {
 
       // 성공 시 모달 닫고 이동
       if (isModalOpen === "modify") {
-        navigate(`/study/${studyId}/modify`);
+        navigate(`/study/${studyId}/edit`);
       } else if (isModalOpen === "habits") {
         navigate(`/study/${studyId}/habits`);
       } else if (isModalOpen === "concentration") {
@@ -102,7 +102,7 @@ function StudyViewPage() {
                 <button
                   type="button"
                   className={"primary"}
-                  onClick={() => setIsModalOpen("concentration")}
+                  onClick={() => setIsModalOpen("modify")}
                 >
                   수정하기
                 </button>
