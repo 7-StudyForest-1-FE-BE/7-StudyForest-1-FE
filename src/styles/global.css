@@ -1,4 +1,4 @@
-.sr-only {
+.sr__only {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -9,6 +9,9 @@
   border: 0;
   clip: rect(0 0 0 0);
 }
+.primary {
+  color: #578246;
+}
 body {
   background: #f6f4ef;
 }
@@ -16,7 +19,56 @@ body {
   width: 100%;
   overflow: hidden;
 }
-
+.form__area {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.form__area > button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  height: 58px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 16px;
+  background: #99c08e;
+  border: 0;
+}
+.input__row {
+}
+.input__row dl {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.input__box {
+  position: relative;
+}
+.input__box input {
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
+  padding: 0 24px;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  outline: none;
+}
+.input__box__md input {
+  height: 42px;
+}
+.input__box input + button {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+}
 @media (max-width: 1199px) {
   .container {
     padding: 0 24px;

@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import styles from "./HabitModal.module.css";
 import deleteIcon from "../../assets/btn_determinate.svg";
+import { saveTodayHabits, getStudyHabits } from "../../api/Habit_SG";
 
 function HabitModal({ isOpen, onClose, habits, setHabits }) {
+  const { studyId } = useParams();
   const [tempHabits, setTempHabits] = useState(habits);
 
   useEffect(() => {
@@ -32,6 +35,7 @@ function HabitModal({ isOpen, onClose, habits, setHabits }) {
     const cleaned = tempHabits.filter(
       (h) => typeof h === "string" && h.trim() !== ""
     );
+    console.log("보낼 습관", cleaned);
     try {
       await saveTodayHabits(studyId, cleaned);
       const updatedHabits = await getStudyHabits(studyId);
@@ -54,11 +58,10 @@ function HabitModal({ isOpen, onClose, habits, setHabits }) {
 
         <div className={styles.modal__list}>
           {tempHabits.map((habit, index) => (
-            <div className={styles.modal__row}>
+            <div key={index} className={styles.modal__row}>
               <input
-                key={index}
                 type="text"
-                value={habit || ""}
+                value={typeof habit === "string" ? habit : habit?.title || ""}
                 onChange={(e) => ChangeHabit(index, e.target.value)}
                 className={styles.modal__input}
                 placeholder={"_______________"}

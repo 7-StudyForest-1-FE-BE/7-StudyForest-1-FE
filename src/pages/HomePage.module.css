@@ -106,8 +106,10 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow: hidden;
 }
 .item .info__area {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -161,6 +163,16 @@
 .card__list .item.bg {
   background: #41414180;
 }
+.card__list .item.bg:before {
+  content: "";
+  opacity: 0.4;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: #000;
+}
 .card__list .item.bg p,
 .card__list .item.bg span {
   color: #fff;
@@ -172,6 +184,7 @@
   background: #00000080;
 }
 .emoji__area {
+  position: relative;
   display: flex;
   gap: 4px;
 }
@@ -200,6 +213,14 @@
   background: none;
   border-radius: 20px;
   border: 1px solid #ddd;
+}
+.no__data {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 243px;
 }
 @media (max-width: 1199px) {
   .recent__card__list {
