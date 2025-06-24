@@ -1,25 +1,26 @@
-import styles from "./StudyViewPage.module.css";
-import smile from "../assets/ic_smile.svg";
-import arrowRight from "../assets/ic_arrow_right.svg";
-import point from "../assets/ic_point.svg";
-import { useState, useEffect } from "react";
-import { Link, Navigate, useParams, useNavigate } from "react-router";
-import mockData from "../mock.json";
-import HabitsTable from "../components/Study/HabitsTable";
-import EmojiPicker from "emoji-picker-react";
-import PasswordModal from "../components/Modal/PasswordModal";
-import EmojiButton from "../components/Emoji/EmojiButton";
-import { getStudyItem, checkStudyPassword } from "../api/List_DS.js";
+import styles from './StudyViewPage.module.css';
+import smile from '../assets/ic_smile.svg';
+import arrowRight from '../assets/ic_arrow_right.svg';
+import point from '../assets/ic_point.svg';
+import { useState, useEffect } from 'react';
+import { Link, Navigate, useParams, useNavigate } from 'react-router';
+import mockData from '../mock.json';
+import HabitsTable from '../components/Study/HabitsTable';
+import EmojiPicker from 'emoji-picker-react';
+import PasswordModal from '../components/Modal/PasswordModal';
+import EmojiButton from '../components/Emoji/EmojiButton';
+import { getStudyItem, checkStudyPassword } from '../api/List_DS.js';
+import DeleteStudyModal from '../components/Modal/DeleteStudyModal.jsx';
+import { deleteStudy } from '../api/View_JS.js';
 
 function saveRecentlyViewedStudy(studyId) {
-  const stored = JSON.parse(localStorage.getItem("recentStudyIds")) || [];
+  const stored = JSON.parse(localStorage.getItem('recentStudyIds')) || [];
 
-  const filtered = stored.filter((id) => id !== studyId);
-  const updated = [studyId, ...filtered].slice(0, 3); // 최신 3개
+  const filtered = stored.filter((id) => id !== studyId); // 중복 제거
+  const updated = [studyId, ...filtered].slice(0, 3); // 최대 3개만 저장
 
-  localStorage.setItem("recentStudyIds", JSON.stringify(updated));
+  localStorage.setItem('recentStudyIds', JSON.stringify(updated));
 }
-
 function StudyViewPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEmojiOpen, setIsEmojiOpen] = useState(false);
@@ -35,10 +36,15 @@ function StudyViewPage() {
   const navigate = useNavigate();
   const [item, setItem] = useState({});
   const handleFetch = async () => {
+<<<<<<< HEAD
     const study = await getStudyItem(studyId + "?populateHabits=true");
     console.log("study:" + study);
+=======
+    const study = await getStudyItem(studyId);
+    console.log('study:' + study);
+>>>>>>> 7f00dffdfc71b4a005a89a4219e34c2bc4fe7b52
     if (!item) {
-      return <Navigate to={"/"} />;
+      return <Navigate to={'/'} />;
     }
     setItem(study);
   };
@@ -48,16 +54,16 @@ function StudyViewPage() {
       await checkStudyPassword(studyId, password);
 
       // 성공 시 모달 닫고 이동
-      if (isModalOpen === "modify") {
-        navigate(`/study/${studyId}/modify`);
-      } else if (isModalOpen === "habits") {
+      if (isModalOpen === 'modify') {
+        navigate(`/study/${studyId}/edit`);
+      } else if (isModalOpen === 'habits') {
         navigate(`/study/${studyId}/habits`);
-      } else if (isModalOpen === "concentration") {
+      } else if (isModalOpen === 'concentration') {
         navigate(`/study/${studyId}/concentration`);
       }
       setIsModalOpen(false);
     } catch (err) {
-      console.error("비밀번호 확인 에러:", err);
+      console.error('비밀번호 확인 에러:', err);
       setPwError(true);
       setTimeout(() => setPwError(false), 2000);
     }
@@ -73,6 +79,20 @@ function StudyViewPage() {
   if (item === undefined) return <p>로딩 중...</p>;
   if (item === null) return <Navigate to="/" />;
 
+  // 스터디 삭제
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const handleDelete = async (password) => {
+    try {
+      await checkStudyPassword(studyId, password);
+      await deleteStudy(studyId);
+      alert('스터디가 삭제되었습니다.');
+      navigate('/');
+    } catch (err) {
+      setPwError(true);
+      setTimeout(() => setPwError(false), 2000);
+    }
+  };
+
   return (
     <>
       <div className={styles.block__card}>
@@ -87,28 +107,24 @@ function StudyViewPage() {
                   <img src={smile} />
                   추가
                 </button>
-                {isEmojiOpen && (
-                  <EmojiPicker className={styles.emoji__picker} />
-                )}
+                {isEmojiOpen && <EmojiPicker className={styles.emoji__picker} />}
               </div>
             </div>
             <ul className={styles.study__action__area}>
               <li>
-                <button type="button" className={"primary"}>
+                <button type="button" className={'primary'}>
                   공유하기
                 </button>
               </li>
               <li>
-                <button
-                  type="button"
-                  className={"primary"}
-                  onClick={() => setIsModalOpen("concentration")}
-                >
+                <button type="button" className={'primary'} onClick={() => setIsModalOpen('modify')}>
                   수정하기
                 </button>
               </li>
               <li>
-                <button type="button">스터디 삭제하기</button>
+                <button type="button" onClick={() => setIsDeleteModalOpen(true)}>
+                  스터디 삭제하기
+                </button>
               </li>
             </ul>
           </div>
@@ -118,19 +134,13 @@ function StudyViewPage() {
               <div>
                 <ul className={styles.study__detail__area}>
                   <li>
-                    <button
-                      type="button"
-                      onClick={() => setIsModalOpen("habits")}
-                    >
+                    <button type="button" onClick={() => setIsModalOpen('habits')}>
                       오늘의 습관
                       <img src={arrowRight} />
                     </button>
                   </li>
                   <li>
-                    <button
-                      type="button"
-                      onClick={() => setIsModalOpen("concentration")}
-                    >
+                    <button type="button" onClick={() => setIsModalOpen('concentration')}>
                       오늘의 집중
                       <img src={arrowRight} />
                     </button>
@@ -179,6 +189,10 @@ function StudyViewPage() {
           onConfirm={handlePasswordCheck}
           onClose={() => setIsModalOpen(false)}
         />
+      )}
+
+      {isDeleteModalOpen && (
+        <DeleteStudyModal title={item.title} onConfirm={handleDelete} onClose={() => setIsDeleteModalOpen(false)} />
       )}
       {pwError && (
         <div className={styles.toast}>

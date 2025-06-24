@@ -8,6 +8,7 @@ import StudyRegistrationPage from "./pages/StudyRegistrationPage.jsx";
 import HabitPage from "./pages/HabitPage.jsx";
 import ConcentrationPage from "./pages/ConcentrationPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
+import StudyEditPage from "./pages/StudyEditPage.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -17,9 +18,13 @@ createRoot(document.getElementById("root")).render(
           <Route path={"/"} element={<HomePage />} />
           <Route path={"/view"} element={<StudyViewPage />} />
           <Route path={"/view/:studyId"} element={<StudyViewPage />} />
+          <Route path={"/study/:id/edit"} element={<StudyEditPage />} />
           <Route path={"/registration"} element={<StudyRegistrationPage />} />
           <Route path={"/study/:studyId/habits"} element={<HabitPage />} />
-          <Route path={"/concentration"} element={<ConcentrationPage />} />
+          <Route
+            path={"/study/:studyId/concentration"}
+            element={<ConcentrationPage />}
+          />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </App>
