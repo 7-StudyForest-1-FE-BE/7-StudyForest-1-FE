@@ -11,20 +11,38 @@ function HabitPage() {
   const [selectedItems, setSelectedItems] = useState([]);
   const { studyId } = useParams();
 
-  const toggleItem = (index) => {
-    setSelectedItems((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
-    );
+  const getTodayDay = () => {
+    const days = ["일", "월", "화", "수", "목", "금", "토"];
+    return days[new Date().getDay()];
+  };
+
+  const toggleItem = async (habitId) => {
+    const day = getTodayDay();
+    try {
+      const res = await fetch(
+        `http://localhost:3000/api/habits/${habitId}/toggle`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ day }),
+        }
+      );
+      const updatedHabit = await res.json();
+
+      setHabits((prev) =>
+        prev.map((h) => (h._id === updatedHabit._id ? updatedHabit : h))
+      );
+    } catch (error) {
+      console.error("습관 체크 토글 실패:", error);
+    }
   };
 
   useEffect(() => {
     async function fetchHabits() {
       try {
         const data = await getStudyHabits(studyId);
-        console.log("📤 서버에서 불러온 습관 목록", data);
-        setHabits(
-          data.map((habit) => (typeof habit === "string" ? habit : habit.title))
-        );
+        console.log("서버에서 불러온 습관 목록", data);
+        setHabits(data);
       } catch (error) {
         console.error("습관 데이터 불러오기 실패:", error);
       }
@@ -75,25 +93,37 @@ function HabitPage() {
                   <br /> 목록 수정을 눌러 습관을 생성해보세요
                 </div>
               ) : (
-                habits.map((habit, index) => (
-                  <div
-                    key={index}
-                    className={`${styles.habit__item} ${
-                      selectedItems.includes(index) ? styles.selected : ""
-                    }`}
-                    onClick={() => toggleItem(index)}
-                  >
-                    {habit}
-                  </div>
-                ))
+                habits.map((habit, index) => {
+                  const today = getTodayDay();
+                  const isChecked = habit.checkedDays?.[today] || false;
+
+                  return (
+                    <div
+                      key={habit._id}
+                      className={`${styles.habit__item} ${
+                        isChecked ? styles.selected : ""
+                      }`}
+                      onClick={() => toggleItem(habit._id)}
+                    >
+                      {habit.title}
+                    </div>
+                  );
+                })
               )}
             </div>
 
             <HabitModal
               isOpen={modalOpen}
               onClose={() => setModalOpen(false)}
-              habits={habits}
-              setHabits={setHabits}
+              habits={habits.map((h) => h.title)}
+              setHabits={(titles) => {
+                async function reloadHabits() {
+                  if (!studyId) return;
+                  const data = await getStudyHabits(studyId);
+                  setHabits(data);
+                }
+                reloadHabits();
+              }}
             />
           </div>
         </div>

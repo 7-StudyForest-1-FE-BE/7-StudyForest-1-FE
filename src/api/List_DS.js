@@ -45,7 +45,7 @@ export const getStudyHabits = async (studyId) => {
 
   const data = await response.json();
 
-  return data.habits.map((habit) => habit.title);
+  return data.habits;
 };
 
 export const getRecentStudies = async (ids) => {
