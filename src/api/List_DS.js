@@ -36,6 +36,15 @@ export const checkStudyPassword = async (studyId, password) => {
   return await res.json();
 };
 
+export const getRecentStudies = async (ids) => {
+  const res = await fetch("http://localhost:3000/api/studies/recent", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ids }),
+  });
+  return res.json();
+};
+
 export const getStudyHabits = async (studyId) => {
   const response = await fetch(
     `http://localhost:3000/api/studies/${studyId}?populateHabits=true`
