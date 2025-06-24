@@ -8,7 +8,9 @@ export const getStudyList = async ({ offset = 0, limit = 6 }) => {
 };
 
 export const getStudyItem = async (studyId) => {
-  const response = await fetch(`http://localhost:3000/api/studies/${studyId}`);
+  const response = await fetch(
+    `http://localhost:3000/api/studies/${studyId}?populateHabits=true`
+  );
   if (!response.ok) throw new Error("개별 스터디 상세보기 실패");
   const data = await response.json();
   return data;
@@ -32,4 +34,15 @@ export const checkStudyPassword = async (studyId, password) => {
   }
 
   return await res.json();
+};
+
+export const getStudyHabits = async (studyId) => {
+  const response = await fetch(
+    `http://localhost:3000/api/studies/${studyId}?populateHabits=true`
+  );
+  if (!response.ok) throw new Error("스터디 습관 불러오기 실패");
+
+  const data = await response.json();
+
+  return data.habits.map((habit) => habit.title);
 };

@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import styles from "./HabitModal.module.css";
 import deleteIcon from "../../assets/btn_determinate.svg";
+import { saveTodayHabits, getStudyHabits } from "../../api/Habit_SG";
 
 function HabitModal({ isOpen, onClose, habits, setHabits }) {
+  const { studyId } = useParams();
   const [tempHabits, setTempHabits] = useState(habits);
 
   useEffect(() => {
@@ -27,10 +30,21 @@ function HabitModal({ isOpen, onClose, habits, setHabits }) {
     setTempHabits((prev) => prev.filter((_, i) => i !== indexToRemove));
   };
 
-  const HandleComplete = () => {
-    const cleaned = tempHabits.filter((h) => h.trim() !== "");
-    setHabits(cleaned);
-    onClose();
+  const HandleComplete = async () => {
+    console.log("현재 studyId : ", studyId);
+    const cleaned = tempHabits.filter(
+      (h) => typeof h === "string" && h.trim() !== ""
+    );
+    console.log("보낼 습관", cleaned);
+    try {
+      await saveTodayHabits(studyId, cleaned);
+      const updatedHabits = await getStudyHabits(studyId);
+      setHabits(updatedHabits.map((h) => h.title || h));
+      onClose();
+    } catch (error) {
+      console.error("습관 저장 실패:", error);
+      alert("습관 저장에 실패했습니다. 다시 시도해 주세요.");
+    }
   };
 
   const HandleCancel = () => {
@@ -44,11 +58,10 @@ function HabitModal({ isOpen, onClose, habits, setHabits }) {
 
         <div className={styles.modal__list}>
           {tempHabits.map((habit, index) => (
-            <div className={styles.modal__row}>
+            <div key={index} className={styles.modal__row}>
               <input
-                key={index}
                 type="text"
-                value={habit}
+                value={typeof habit === "string" ? habit : habit?.title || ""}
                 onChange={(e) => ChangeHabit(index, e.target.value)}
                 className={styles.modal__input}
                 placeholder={"_______________"}

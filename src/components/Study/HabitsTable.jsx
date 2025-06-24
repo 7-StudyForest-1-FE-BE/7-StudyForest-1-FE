@@ -24,13 +24,13 @@ function HabitsTable({ habits }) {
       <div className={styles.table__body}>
         {habits.map((habit) => {
           return (
-            <div className={styles.table__row}>
+            <div key={habit._id} className={styles.table__row}>
               <div className={`${styles.col} ${styles.col__name}`}>
                 {habit.title}
               </div>
               {dayLabels.map((day, idx) => {
                 return (
-                  <div className={`${styles.col} ${styles.col__day}`}>
+                  <div key={idx} className={`${styles.col} ${styles.col__day}`}>
                     {habit.checkedDays[day] ? (
                       <img src={green} alt="" />
                     ) : (

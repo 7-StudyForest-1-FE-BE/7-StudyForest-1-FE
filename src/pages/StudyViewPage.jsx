@@ -35,7 +35,7 @@ function StudyViewPage() {
   const navigate = useNavigate();
   const [item, setItem] = useState({});
   const handleFetch = async () => {
-    const study = await getStudyItem(studyId);
+    const study = await getStudyItem(studyId + "?populateHabits=true");
     console.log("study:" + study);
     if (!item) {
       return <Navigate to={"/"} />;
