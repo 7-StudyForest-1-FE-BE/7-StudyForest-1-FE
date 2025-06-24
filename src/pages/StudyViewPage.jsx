@@ -4,7 +4,6 @@ import arrowRight from "../assets/ic_arrow_right.svg";
 import point from "../assets/ic_point.svg";
 import { useState, useEffect } from "react";
 import { Link, Navigate, useParams, useNavigate } from "react-router";
-import mockData from "../mock.json";
 import HabitsTable from "../components/Study/HabitsTable";
 import EmojiPicker from "emoji-picker-react";
 import PasswordModal from "../components/Modal/PasswordModal";
@@ -12,6 +11,7 @@ import EmojiButton from "../components/Emoji/EmojiButton";
 import { getStudyItem, checkStudyPassword } from "../api/List_DS.js";
 import DeleteStudyModal from "../components/Modal/DeleteStudyModal.jsx";
 import { deleteStudy } from "../api/View_JS.js";
+import CustomEmojiPicker from "../components/Emoji/CustomEmojiPicker.jsx";
 
 function saveRecentlyViewedStudy(studyId) {
   const stored = JSON.parse(localStorage.getItem("recentStudyIds")) || [];
@@ -28,9 +28,6 @@ function StudyViewPage() {
   const handleEmojiPicker = () => {
     setIsEmojiOpen((prev) => !prev);
   };
-  const handleModal = () => {
-    setOpen((prev) => !prev);
-  };
 
   const { studyId } = useParams();
   const navigate = useNavigate();
@@ -38,7 +35,6 @@ function StudyViewPage() {
   const handleFetch = async () => {
     const study = await getStudyItem(studyId + "?populateHabits=true");
     console.log("study:" + study);
-
     if (!item) {
       return <Navigate to={"/"} />;
     }
@@ -59,9 +55,54 @@ function StudyViewPage() {
       }
       setIsModalOpen(false);
     } catch (err) {
-      console.error("비밀번호 확인 에러:", err);
       setPwError(true);
       setTimeout(() => setPwError(false), 2000);
+    }
+  };
+
+  const refreshStudyItem = async () => {
+    const study = await getStudyItem(studyId);
+    setItem(study);
+  };
+
+  const handleEmojiSelect = async (emoji) => {
+    console.log("😃 선택된 이모지:", emoji);
+    const safeEmoji = emoji.native || emoji; // 만약 emoji-picker 사용 시
+
+    // 로컬스토리지에서 해당 이모지를 이미 눌렀는지 확인
+    const storage = JSON.parse(localStorage.getItem("emojis")) || {};
+    const hasReacted = storage[studyId]?.[emoji] === true;
+
+    if (hasReacted) {
+      console.log("이미 등록한 이모지입니다. 무시합니다.");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:3000/api/emojis/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          studyId,
+          emoji: safeEmoji,
+          action: "increase", // 항상 처음은 증가
+        }),
+      });
+
+      const result = await res.json();
+      console.log("✅ 등록 성공:", result);
+
+      // 로컬스토리지 업데이트
+      storage[studyId] = storage[studyId] || {};
+      storage[studyId][emoji] = true;
+      localStorage.setItem("emojis", JSON.stringify(storage));
+
+      // 새로고침
+      if (refreshStudyItem) {
+        refreshStudyItem?.(studyId);
+      }
+    } catch (error) {
+      console.error("이모지 등록 실패:", error);
     }
   };
 
@@ -96,7 +137,13 @@ function StudyViewPage() {
           <div className={styles.util}>
             <div className={styles.emoji__area}>
               {item.emojis?.map((reaction) => {
-                return <EmojiButton reaction={reaction} />;
+                return (
+                  <EmojiButton
+                    reaction={reaction}
+                    studyId={studyId}
+                    onRefreshItem={refreshStudyItem}
+                  />
+                );
               })}
               <div className={styles.picker__area}>
                 <button type="button" onClick={handleEmojiPicker}>
@@ -104,7 +151,7 @@ function StudyViewPage() {
                   추가
                 </button>
                 {isEmojiOpen && (
-                  <EmojiPicker className={styles.emoji__picker} />
+                  <CustomEmojiPicker onSelect={handleEmojiSelect} />
                 )}
               </div>
             </div>

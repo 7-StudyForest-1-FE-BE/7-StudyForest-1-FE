@@ -60,7 +60,7 @@ function Card({ item, studyId, onRefreshItem }) {
           <div className={styles.point__label}>
             <img src={point} />
             <p>
-              <span>{item.point || 0}</span>P 획득
+              <span>{item.points || 0}</span>P 획득
             </p>
           </div>
         </div>
