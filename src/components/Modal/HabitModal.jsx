@@ -27,10 +27,20 @@ function HabitModal({ isOpen, onClose, habits, setHabits }) {
     setTempHabits((prev) => prev.filter((_, i) => i !== indexToRemove));
   };
 
-  const HandleComplete = () => {
-    const cleaned = tempHabits.filter((h) => h.trim() !== "");
-    setHabits(cleaned);
-    onClose();
+  const HandleComplete = async () => {
+    console.log("현재 studyId : ", studyId);
+    const cleaned = tempHabits.filter(
+      (h) => typeof h === "string" && h.trim() !== ""
+    );
+    try {
+      await saveTodayHabits(studyId, cleaned);
+      const updatedHabits = await getStudyHabits(studyId);
+      setHabits(updatedHabits.map((h) => h.title || h));
+      onClose();
+    } catch (error) {
+      console.error("습관 저장 실패:", error);
+      alert("습관 저장에 실패했습니다. 다시 시도해 주세요.");
+    }
   };
 
   const HandleCancel = () => {
@@ -48,7 +58,7 @@ function HabitModal({ isOpen, onClose, habits, setHabits }) {
               <input
                 key={index}
                 type="text"
-                value={habit}
+                value={habit || ""}
                 onChange={(e) => ChangeHabit(index, e.target.value)}
                 className={styles.modal__input}
                 placeholder={"_______________"}

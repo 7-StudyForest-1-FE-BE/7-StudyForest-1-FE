@@ -15,6 +15,23 @@ function HabitPage() {
     );
   };
 
+<<<<<<< Updated upstream
+=======
+  useEffect(() => {
+    async function fetchHabits() {
+      try {
+        const data = await getStudyHabits(studyId);
+        setHabits(data.map((habit) => habit.title));
+      } catch (error) {
+        console.error("습관 데이터 불러오기 실패:", error);
+      }
+    }
+    if (studyId) {
+      fetchHabits();
+    }
+  }, [studyId]);
+
+>>>>>>> Stashed changes
   return (
     <>
       <main className={styles.inner}>
@@ -25,7 +42,7 @@ function HabitPage() {
               <Link to={"/concentration"} className={styles.btn}>
                 오늘의 집중 &gt;
               </Link>
-              <Link to={"/"} className={`${styles.btn} ${styles.homebtn}`}>
+              <Link to={"/"} className={${styles.btn} ${styles.homebtn}}>
                 홈 &gt;
               </Link>
             </div>
@@ -59,9 +76,9 @@ function HabitPage() {
                 habits.map((habit, index) => (
                   <div
                     key={index}
-                    className={`${styles.habit__item} ${
+                    className={${styles.habit__item} ${
                       selectedItems.includes(index) ? styles.selected : ""
-                    }`}
+                    }}
                     onClick={() => toggleItem(index)}
                   >
                     {habit}
