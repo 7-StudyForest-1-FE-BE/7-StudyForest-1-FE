@@ -1,14 +1,21 @@
 import Card from "./Card";
 import styles from "../../pages/HomePage.module.css";
 
-function CardList({ items, className }) {
+function CardList({ items, className, onRefreshItem }) {
   console.log("items" + items);
   return (
     <>
       {items.length > 0 ? (
         <div className={className}>
           {items.map((item) => {
-            return <Card key={item._id} item={item} />;
+            return (
+              <Card
+                key={item._id}
+                item={item}
+                studyId={item._id}
+                onRefreshItem={onRefreshItem}
+              />
+            );
           })}
         </div>
       ) : (
