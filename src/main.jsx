@@ -18,9 +18,9 @@ createRoot(document.getElementById("root")).render(
           <Route path={"/"} element={<HomePage />} />
           <Route path={"/view"} element={<StudyViewPage />} />
           <Route path={"/view/:studyId"} element={<StudyViewPage />} />
+          <Route path={"/study/:studyId/habits"} element={<HabitPage />} />
           <Route path={"/study/:id/edit"} element={<StudyEditPage />} />
           <Route path={"/registration"} element={<StudyRegistrationPage />} />
-          <Route path={"/study/:studyId/habits"} element={<HabitPage />} />
           <Route
             path={"/study/:studyId/concentration"}
             element={<ConcentrationPage />}

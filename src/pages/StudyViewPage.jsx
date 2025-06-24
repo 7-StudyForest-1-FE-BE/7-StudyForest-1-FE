@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import styles from './StudyViewPage.module.css';
 import smile from '../assets/ic_smile.svg';
 import arrowRight from '../assets/ic_arrow_right.svg';
@@ -12,6 +13,21 @@ import EmojiButton from '../components/Emoji/EmojiButton';
 import { getStudyItem, checkStudyPassword } from '../api/List_DS.js';
 import DeleteStudyModal from '../components/Modal/DeleteStudyModal.jsx';
 import { deleteStudy } from '../api/View_JS.js';
+=======
+import styles from "./StudyViewPage.module.css";
+import smile from "../assets/ic_smile.svg";
+import arrowRight from "../assets/ic_arrow_right.svg";
+import point from "../assets/ic_point.svg";
+import { useState, useEffect } from "react";
+import { Link, Navigate, useParams, useNavigate } from "react-router";
+import mockData from "../mock.json";
+import HabitsTable from "../components/Study/HabitsTable";
+import EmojiPicker from "emoji-picker-react";
+import PasswordModal from "../components/Modal/PasswordModal";
+import EmojiButton from "../components/Emoji/EmojiButton";
+import { getStudyItem, checkStudyPassword } from "../api/List_DS.js";
+n;
+>>>>>>> sg-fixed
 
 function saveRecentlyViewedStudy(studyId) {
   const stored = JSON.parse(localStorage.getItem('recentStudyIds')) || [];
@@ -37,6 +53,9 @@ function StudyViewPage() {
   const [item, setItem] = useState({});
   const handleFetch = async () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> sg-fixed
     const study = await getStudyItem(studyId + "?populateHabits=true");
     console.log("study:" + study);
 =======
