@@ -20,7 +20,7 @@ function calculateDaysSince(dateString) {
   return diffInDays;
 }
 
-function Card({ item }) {
+function Card({ item, studyId, onRefreshItem }) {
   const theme = bgThemes.find((theme) => theme.id === (item.bg || 1));
   console.log("theme: " + theme);
   let style = {};
@@ -68,7 +68,13 @@ function Card({ item }) {
       </div>
       <div className={styles.emoji__area}>
         {item.emojis?.map((reaction) => {
-          return <EmojiButton reaction={reaction} />;
+          return (
+            <EmojiButton
+              reaction={reaction}
+              studyId={studyId}
+              onRefreshItem={onRefreshItem}
+            />
+          );
         })}
       </div>
     </div>
