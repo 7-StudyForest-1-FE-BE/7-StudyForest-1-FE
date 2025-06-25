@@ -67,15 +67,17 @@ function Card({ item, studyId, onRefreshItem }) {
         <p className={styles.description}>{item.description}</p>
       </div>
       <div className={styles.emoji__area}>
-        {item.emojis?.map((reaction) => {
-          return (
-            <EmojiButton
-              reaction={reaction}
-              studyId={studyId}
-              onRefreshItem={onRefreshItem}
-            />
-          );
-        })}
+        {item.emojis
+          ?.filter((reaction) => reaction.count > 0)
+          .map((reaction) => {
+            return (
+              <EmojiButton
+                reaction={reaction}
+                studyId={studyId}
+                onRefreshItem={onRefreshItem}
+              />
+            );
+          })}
       </div>
     </div>
   );
