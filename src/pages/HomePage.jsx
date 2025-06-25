@@ -125,6 +125,7 @@ function HomePage() {
             <CardList
               items={recentStudies}
               className={`${styles.card__list} ${styles.recent__card__list}`}
+              onRefreshItem={refreshStudyItem}
             />
           </div>
         </article>
