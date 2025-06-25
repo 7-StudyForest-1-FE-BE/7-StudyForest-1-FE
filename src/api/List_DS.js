@@ -11,7 +11,6 @@ export const getStudyItem = async (studyId) => {
   const response = await fetch(
     `http://localhost:3000/api/studies/${studyId}?populateHabits=true`
   );
-
   if (!response.ok) throw new Error("개별 스터디 상세보기 실패");
   const data = await response.json();
   return data;
@@ -37,6 +36,15 @@ export const checkStudyPassword = async (studyId, password) => {
   return await res.json();
 };
 
+export const getRecentStudies = async (ids) => {
+  const res = await fetch("http://localhost:3000/api/studies/recent", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ids }),
+  });
+  return res.json();
+};
+
 export const getStudyHabits = async (studyId) => {
   const response = await fetch(
     `http://localhost:3000/api/studies/${studyId}?populateHabits=true`
@@ -46,13 +54,4 @@ export const getStudyHabits = async (studyId) => {
   const data = await response.json();
 
   return data.habits;
-};
-
-export const getRecentStudies = async (ids) => {
-  const res = await fetch("http://localhost:3000/api/studies/recent", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ids }),
-  });
-  return res.json();
 };

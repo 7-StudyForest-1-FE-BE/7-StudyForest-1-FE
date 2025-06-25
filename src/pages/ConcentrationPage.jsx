@@ -6,14 +6,16 @@ import pauseBtn from "../assets/ic_pause_btn.svg";
 import restartBtn from "../assets/ic_restart_btn.svg";
 import stop from "../assets/ic_stop.svg";
 import { useState, useEffect, useRef } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { getStudyItem } from "../api/List_DS";
+import ExitConfirmModal from "../components/Modal/ExitConfirmModal";
 import "./ConcentrationPage.css";
 
 function ConcentrationPage() {
-  const { studyId } = useParams(); // URL에서 studyId 가져오기
+  const { studyId } = useParams();
+  const navigate = useNavigate();
   const [time, setTime] = useState(25 * 60);
-  const [originalTime, setOriginalTime] = useState(25 * 60); // 원래 설정 시간 저장
+  const [originalTime, setOriginalTime] = useState(25 * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -21,10 +23,12 @@ function ConcentrationPage() {
   const [isPaused, setIsPaused] = useState(false);
   const [showPointMessage, setShowPointMessage] = useState(false);
   const [pointMessage, setPointMessage] = useState("");
-  const [studyPoints, setStudyPoints] = useState(0); // 현재 스터디 포인트
-  const [studyInfo, setStudyInfo] = useState({ nickname: "", title: "" }); // 스터디 정보 추가
-  const [loading, setLoading] = useState(true); // 로딩 상태 추가
-  const [error, setError] = useState(null); // 에러 상태 추가
+  const [studyPoints, setStudyPoints] = useState(0);
+  const [studyInfo, setStudyInfo] = useState({ nickname: "", title: "" });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showExitModal, setShowExitModal] = useState(false);
+  const [pendingNavigation, setPendingNavigation] = useState(null);
   const intervalRef = useRef(null);
 
   // 스터디 정보 로드
@@ -34,17 +38,50 @@ function ConcentrationPage() {
     }
   }, [studyId]);
 
+  // 페이지 이탈 방지
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (isTimerActive()) {
+        e.preventDefault();
+        e.returnValue =
+          "지금 나가면 포인트를 획득하지 못합니다! 그래도 나가시겠습니까?";
+        return e.returnValue;
+      }
+    };
+
+    const handlePopState = (e) => {
+      if (isTimerActive()) {
+        e.preventDefault();
+        setShowExitModal(true);
+        setPendingNavigation("back");
+        window.history.pushState(null, "", window.location.pathname);
+      }
+    };
+
+    window.history.pushState(null, "", window.location.pathname);
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [isRunning, hasStarted, time]);
+
+  const isTimerActive = () => {
+    return (isRunning || isPaused) && hasStarted && time > 0;
+  };
+
   const fetchStudyInfo = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      // API 함수 사용
       const study = await getStudyItem(studyId);
 
-      console.log("스터디 정보:", study); // 디버깅용
+      console.log("스터디 정보:", study);
 
-      // StudyViewPage와 동일한 null 체크
       if (!study) {
         setError("스터디를 찾을 수 없습니다.");
         return;
@@ -74,14 +111,18 @@ function ConcentrationPage() {
     return isNegative ? `-${timeString}` : timeString;
   };
 
-  // 포인트 계산 함수
   const calculatePoints = (completedSeconds) => {
+    const minRequiredTime = 10 * 60; // 10분
+
+    if (completedSeconds < minRequiredTime) {
+      return 0;
+    }
+
     const basePoints = 3;
     const bonusPoints = Math.floor(completedSeconds / (10 * 60));
     return basePoints + bonusPoints;
   };
 
-  // 타이머 완료 시 포인트 저장
   const saveTimerResult = async (duration) => {
     if (!studyId) {
       console.error("studyId가 없습니다.");
@@ -104,10 +145,13 @@ function ConcentrationPage() {
         const result = await response.json();
         const earnedPoints = result.earnedPoints;
 
-        // 포인트 업데이트
         setStudyPoints((prev) => prev + earnedPoints);
 
-        setPointMessage(`${earnedPoints}포인트를 획득했습니다!`);
+        if (earnedPoints > 0) {
+          setPointMessage(`${earnedPoints}포인트를 획득했습니다!`);
+        } else {
+          setPointMessage("최소 10분 완료해야 포인트를 획득할 수 있습니다!");
+        }
         setShowPointMessage(true);
 
         setTimeout(() => {
@@ -221,6 +265,35 @@ function ConcentrationPage() {
     }
   };
 
+  const handleNavigation = (path) => {
+    if (isTimerActive()) {
+      setShowExitModal(true);
+      setPendingNavigation(path);
+    } else {
+      navigate(path);
+    }
+  };
+
+  // 모달 확인 시 실행
+  const confirmExit = () => {
+    setShowExitModal(false);
+    // 타이머 정리
+    handleStop();
+
+    if (pendingNavigation === "back") {
+      window.history.back();
+    } else if (pendingNavigation) {
+      navigate(pendingNavigation);
+    }
+    setPendingNavigation(null);
+  };
+
+  // 모달 취소 시 실행
+  const cancelExit = () => {
+    setShowExitModal(false);
+    setPendingNavigation(null);
+  };
+
   useEffect(() => {
     if (isRunning) {
       intervalRef.current = setInterval(() => {
@@ -284,16 +357,22 @@ function ConcentrationPage() {
             </h1>
             <div className="button">
               <button className="habit__btn">
-                <Link to={studyId ? `/study/${studyId}/habits` : "/habit"}>
+                <div
+                  onClick={() =>
+                    handleNavigation(
+                      studyId ? `/study/${studyId}/habits` : "/habit"
+                    )
+                  }
+                >
                   오늘의 습관
                   <img src={arrow} alt="arrow" className="arrow__icon" />
-                </Link>
+                </div>
               </button>
               <button className="home__btn">
-                <Link to={"/"}>
+                <div onClick={() => handleNavigation("/")}>
                   홈
                   <img src={arrow} alt="arrow" className="arrow__icon" />
-                </Link>
+                </div>
               </button>
             </div>
           </div>
@@ -397,6 +476,13 @@ function ConcentrationPage() {
             </div>
           )}
         </div>
+
+        {/* 이탈 확인 모달 */}
+        <ExitConfirmModal
+          isOpen={showExitModal}
+          onConfirm={confirmExit}
+          onCancel={cancelExit}
+        />
       </div>
     </div>
   );
