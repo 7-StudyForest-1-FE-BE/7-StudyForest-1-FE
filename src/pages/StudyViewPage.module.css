@@ -164,11 +164,15 @@
   padding: 14px 28px;
   display: flex;
   align-items: center;
-  background: #fde0e9;
+  background: #e1edde;
   border-radius: 12px;
-  color: #f50e0e;
+  color: #578246;
   white-space: nowrap;
   z-index: 15;
+}
+.toast__err {
+  background: #fde0e9;
+  color: #f50e0e;
 }
 @media (max-width: 1199px) {
   .block__card {
