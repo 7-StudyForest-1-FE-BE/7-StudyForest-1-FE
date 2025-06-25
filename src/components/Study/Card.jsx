@@ -1,9 +1,8 @@
 import styles from "../../pages/HomePage.module.css";
-import smile from "../../assets/ic_smile.svg";
 import point from "../../assets/ic_point.svg";
-import EmojiButton from "../Emoji/EmojiButton";
 import { Link } from "react-router";
 import bgThemes from "../../data/bgThemes.js";
+import EmojiArea from "../Emoji/EmojiArea.jsx";
 
 const formatData = (value) => {
   const date = new Date(value);
@@ -66,19 +65,16 @@ function Card({ item, studyId, onRefreshItem }) {
         </div>
         <p className={styles.description}>{item.description}</p>
       </div>
-      <div className={styles.emoji__area}>
-        {item.emojis
-          ?.filter((reaction) => reaction.count > 0)
-          .map((reaction) => {
-            return (
-              <EmojiButton
-                reaction={reaction}
-                studyId={studyId}
-                onRefreshItem={onRefreshItem}
-              />
-            );
-          })}
-      </div>
+
+      {item.emojis.length > 0 ? (
+        <EmojiArea
+          emojis={item.emojis}
+          studyId={studyId}
+          onRefreshItem={onRefreshItem}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 }

@@ -5,9 +5,8 @@ import point from "../assets/ic_point.svg";
 import { useState, useEffect } from "react";
 import { Link, Navigate, useParams, useNavigate } from "react-router";
 import HabitsTable from "../components/Study/HabitsTable";
-import EmojiPicker from "emoji-picker-react";
 import PasswordModal from "../components/Modal/PasswordModal";
-import EmojiButton from "../components/Emoji/EmojiButton";
+import EmojiArea from "../components/Emoji/EmojiArea.jsx";
 import { getStudyItem, checkStudyPassword } from "../api/List_DS.js";
 import DeleteStudyModal from "../components/Modal/DeleteStudyModal.jsx";
 import { deleteStudy } from "../api/View_JS.js";
@@ -70,8 +69,7 @@ function StudyViewPage() {
       }
       setIsModalOpen(false);
     } catch (err) {
-      setPwError(true);
-      setTimeout(() => setPwError(false), 2000);
+      showToast("비밀번호가 일치하지 않습니다.", true);
     }
   };
 
@@ -82,14 +80,14 @@ function StudyViewPage() {
 
   const handleEmojiSelect = async (emoji) => {
     console.log("😃 선택된 이모지:", emoji);
-    const safeEmoji = emoji.native || emoji; // 만약 emoji-picker 사용 시
+    const safeEmoji = emoji.native || emoji;
 
     // 로컬스토리지에서 해당 이모지를 이미 눌렀는지 확인
     const storage = JSON.parse(localStorage.getItem("emojis")) || {};
     const hasReacted = storage[studyId]?.[emoji] === true;
 
     if (hasReacted) {
-      console.log("이미 등록한 이모지입니다. 무시합니다.");
+      showToast("이미 반응한 이모지입니다.", true);
       return;
     }
 
@@ -140,26 +138,45 @@ function StudyViewPage() {
       alert("스터디가 삭제되었습니다.");
       navigate("/");
     } catch (err) {
-      setPwError(true);
-      setTimeout(() => setPwError(false), 2000);
+      showToast("비밀번호가 일치하지 않습니다.", "error");
     }
   };
 
+  const [toastMessage, setToastMessage] = useState("");
+  const [err, setErr] = useState(false);
+
+  const showToast = (message, isError = false) => {
+    setToastMessage(message);
+    setErr(isError);
+    setTimeout(() => {
+      setToastMessage("");
+      setErr(false);
+    }, 2000);
+  };
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      showToast("링크가 복사되었습니다.");
+    } catch (err) {
+      showToast("링크 복사에 실패했습니다.", true);
+    }
+  };
   return (
     <>
       <div className={styles.block__card}>
         <div className={styles.card__header}>
           <div className={styles.util}>
-            <div className={styles.emoji__area}>
-              {item.emojis?.map((reaction) => {
-                return (
-                  <EmojiButton
-                    reaction={reaction}
-                    studyId={studyId}
-                    onRefreshItem={refreshStudyItem}
-                  />
-                );
-              })}
+            <div className={styles.emoji__block}>
+              {item.emojis?.length > 0 ? (
+                <EmojiArea
+                  emojis={item.emojis}
+                  studyId={studyId}
+                  onRefreshItem={refreshStudyItem}
+                  expandable={true}
+                />
+              ) : (
+                ""
+              )}
               <div className={styles.picker__area}>
                 <button type="button" onClick={handleEmojiPicker}>
                   <img src={smile} />
@@ -172,7 +189,11 @@ function StudyViewPage() {
             </div>
             <ul className={styles.study__action__area}>
               <li>
-                <button type="button" className={"primary"}>
+                <button
+                  type="button"
+                  className={"primary"}
+                  onClick={handleCopyLink}
+                >
                   공유하기
                 </button>
               </li>
@@ -271,9 +292,9 @@ function StudyViewPage() {
           onClose={() => setIsDeleteModalOpen(false)}
         />
       )}
-      {pwError && (
-        <div className={styles.toast}>
-          <p>비밀번호가 일치하지 않습니다. 다시 입력해주세요.</p>
+      {toastMessage && (
+        <div className={`${styles.toast} ${err ? styles.toast__err : ""}`}>
+          <p>{toastMessage}</p>
         </div>
       )}
     </>
