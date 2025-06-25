@@ -5,9 +5,8 @@ import point from "../assets/ic_point.svg";
 import { useState, useEffect } from "react";
 import { Link, Navigate, useParams, useNavigate } from "react-router";
 import HabitsTable from "../components/Study/HabitsTable";
-import EmojiPicker from "emoji-picker-react";
 import PasswordModal from "../components/Modal/PasswordModal";
-import EmojiButton from "../components/Emoji/EmojiButton";
+import EmojiArea from "../components/Emoji/EmojiArea.jsx";
 import { getStudyItem, checkStudyPassword } from "../api/List_DS.js";
 import DeleteStudyModal from "../components/Modal/DeleteStudyModal.jsx";
 import { deleteStudy } from "../api/View_JS.js";
@@ -150,16 +149,17 @@ function StudyViewPage() {
       <div className={styles.block__card}>
         <div className={styles.card__header}>
           <div className={styles.util}>
-            <div className={styles.emoji__area}>
-              {item.emojis?.map((reaction) => {
-                return (
-                  <EmojiButton
-                    reaction={reaction}
-                    studyId={studyId}
-                    onRefreshItem={refreshStudyItem}
-                  />
-                );
-              })}
+            <div className={styles.emoji__block}>
+              {item.emojis?.length > 0 ? (
+                <EmojiArea
+                  emojis={item.emojis}
+                  studyId={studyId}
+                  onRefreshItem={refreshStudyItem}
+                  expandable={true}
+                />
+              ) : (
+                ""
+              )}
               <div className={styles.picker__area}>
                 <button type="button" onClick={handleEmojiPicker}>
                   <img src={smile} />
