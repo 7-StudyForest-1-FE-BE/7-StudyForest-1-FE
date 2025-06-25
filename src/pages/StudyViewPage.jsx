@@ -28,10 +28,25 @@ function StudyViewPage() {
   const handleEmojiPicker = () => {
     setIsEmojiOpen((prev) => !prev);
   };
+  const [item, setItem] = useState({});
+  const targetDate = new Date();
+
+  const filteredHabits = item.habits
+    ? item.habits.filter((habit) => {
+        const createdAt = new Date(habit.createdAt);
+        const endDate = habit.endDate ? new Date(habit.endDate) : null;
+        const hasChecked = Object.values(habit.checkedDays || {}).some(Boolean);
+
+        return createdAt <= targetDate && (!endDate || endDate > targetDate);
+      })
+    : [];
+
+  const handleModal = () => {
+    setOpen((prev) => !prev);
+  };
 
   const { studyId } = useParams();
   const navigate = useNavigate();
-  const [item, setItem] = useState({});
   const handleFetch = async () => {
     const study = await getStudyItem(studyId + "?populateHabits=true");
     console.log("study:" + study);
@@ -227,8 +242,8 @@ function StudyViewPage() {
         </div>
         <div className={styles.card__bottom__area}>
           <h3>습관 기록표</h3>
-          {item.habits ? (
-            <HabitsTable habits={item.habits} />
+          {filteredHabits.length > 0 ? (
+            <HabitsTable habits={filteredHabits} />
           ) : (
             <div className={styles.block_no__data}>
               <p>

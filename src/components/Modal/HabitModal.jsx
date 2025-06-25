@@ -7,23 +7,35 @@ import { saveTodayHabits, getStudyHabits } from "../../api/Habit_SG";
 function HabitModal({ isOpen, onClose, habits, setHabits }) {
   const { studyId } = useParams();
   const [tempHabits, setTempHabits] = useState(habits);
+  const [originalIds, setOriginalIds] = useState([]);
 
   useEffect(() => {
     if (isOpen) {
-      setTempHabits(habits);
+      setTempHabits(
+        habits
+          .filter((h) => h.endDate === null) // 삭제되지 않은 것만
+          .map((h) => (typeof h === "string" ? { _id: null, title: h } : h))
+      );
+      setOriginalIds(habits.filter((h) => h._id).map((h) => h._id));
     }
   }, [isOpen, habits]);
 
   if (!isOpen) return null;
 
   const AddHabit = () => {
-    setTempHabits([...tempHabits, ""]);
+    setTempHabits([...tempHabits, { _id: null, title: "" }]);
   };
 
   const ChangeHabit = (index, value) => {
-    const updated = [...tempHabits];
-    updated[index] = value;
-    setTempHabits(updated);
+    setTempHabits((prev) =>
+      prev.map((item, i) =>
+        i === index
+          ? typeof item === "string"
+            ? value
+            : { ...item, title: value }
+          : item
+      )
+    );
   };
 
   const RemoveHabit = (indexToRemove) => {
@@ -33,17 +45,53 @@ function HabitModal({ isOpen, onClose, habits, setHabits }) {
   const HandleComplete = async () => {
     console.log("현재 studyId : ", studyId);
     const cleaned = tempHabits.filter(
-      (h) => typeof h === "string" && h.trim() !== ""
+      (h) =>
+        (typeof h === "string" && h.trim() !== "") ||
+        (typeof h === "object" && h.title?.trim() !== "")
     );
     console.log("보낼 습관", cleaned);
     try {
-      await saveTodayHabits(studyId, cleaned);
+      // 새로 생성할 습관만 추리기
+      const newTitles = cleaned
+        .filter((h) => !h._id)
+        .map((h) => h.title.trim());
+
+      // 기존 습관 이름 수정
+      const updateRequests = cleaned
+        .filter((h) => h._id)
+        .map((h) =>
+          fetch(`http://localhost:3000/api/habits/${h._id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title: h.title.trim() }),
+          })
+        );
+
+      const remainingIds = cleaned.filter((h) => h._id).map((h) => h._id);
+      const deletedIds = originalIds.filter((id) => !remainingIds.includes(id));
+
+      const deleteRequests = deletedIds.map((id) =>
+        fetch(`http://localhost:3000/api/habits/${id}`, {
+          method: "DELETE",
+        })
+      );
+
+      // 백엔드로 기존 습관들 이름 PATCH 요청 보내기
+      await Promise.all([...updateRequests, ...deleteRequests]);
+
+      // 새 습관 저장
+      if (newTitles.length > 0) {
+        await saveTodayHabits(studyId, newTitles);
+      }
+
+      // 최신 습관 목록 다시 가져오기
       const updatedHabits = await getStudyHabits(studyId);
-      setHabits(updatedHabits.map((h) => h.title || h));
+      const visibleHabits = updatedHabits.filter((h) => h.endDate === null);
+      setHabits(visibleHabits);
       onClose();
     } catch (error) {
       console.error("습관 저장 실패:", error);
-      alert("습관 저장에 실패했습니다. 다시 시도해 주세요.");
+      alert("습관 저장에 실패했습니다.");
     }
   };
 
@@ -61,7 +109,7 @@ function HabitModal({ isOpen, onClose, habits, setHabits }) {
             <div key={index} className={styles.modal__row}>
               <input
                 type="text"
-                value={typeof habit === "string" ? habit : habit?.title || ""}
+                value={habit.title}
                 onChange={(e) => ChangeHabit(index, e.target.value)}
                 className={styles.modal__input}
                 placeholder={"_______________"}

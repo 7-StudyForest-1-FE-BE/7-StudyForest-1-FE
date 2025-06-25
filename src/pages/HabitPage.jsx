@@ -8,7 +8,7 @@ import { getStudyHabits } from "../api/List_DS.js";
 function HabitPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [habits, setHabits] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [studyName, setStudyName] = useState("");
   const { studyId } = useParams();
 
   const getTodayDay = () => {
@@ -38,18 +38,24 @@ function HabitPage() {
   };
 
   useEffect(() => {
-    async function fetchHabits() {
+    async function fetchData() {
+      if (!studyId) return;
       try {
         const data = await getStudyHabits(studyId);
-        console.log("서버에서 불러온 습관 목록", data);
-        setHabits(data);
+        setHabits(data.filter((h) => h.endDate === null));
+
+        // 스터디 상세 정보 API 호출해서 이름 가져오기
+        const studyResponse = await fetch(
+          `http://localhost:3000/api/studies/${studyId}`
+        );
+        if (!studyResponse.ok) throw new Error("스터디 상세 조회 실패");
+        const studyData = await studyResponse.json();
+        setStudyName(studyData.title || "");
       } catch (error) {
-        console.error("습관 데이터 불러오기 실패:", error);
+        console.error("데이터 불러오기 실패:", error);
       }
     }
-    if (studyId) {
-      fetchHabits();
-    }
+    fetchData();
   }, [studyId]);
 
   return (
@@ -57,9 +63,12 @@ function HabitPage() {
       <main className={styles.inner}>
         <div className={styles.container}>
           <div className={styles.headerline}>
-            <h1 className={styles.title}>연우의 개발공장</h1>
+            <h1 className={styles.title}>{studyName || "스터디 이름"}</h1>
             <div className={styles.linkgroup}>
-              <Link to={"/concentration"} className={styles.btn}>
+              <Link
+                to={`/study/${studyId}/concentration`}
+                className={styles.btn}
+              >
                 오늘의 집중 &gt;
               </Link>
               <Link to={"/"} className={`${styles.btn} ${styles.homebtn}`}>
@@ -115,12 +124,13 @@ function HabitPage() {
             <HabitModal
               isOpen={modalOpen}
               onClose={() => setModalOpen(false)}
-              habits={habits.map((h) => h.title)}
-              setHabits={(titles) => {
+              habits={habits}
+              setHabits={(newHabits) => {
+                // 새로 서버에서 다시 받아와서 업데이트
                 async function reloadHabits() {
                   if (!studyId) return;
                   const data = await getStudyHabits(studyId);
-                  setHabits(data);
+                  setHabits(data.filter((h) => h.endDate === null));
                 }
                 reloadHabits();
               }}
