@@ -4,17 +4,12 @@ import { Link } from "react-router";
 import bgThemes from "../../data/bgThemes.js";
 import EmojiArea from "../Emoji/EmojiArea.jsx";
 
-const formatData = (value) => {
-  const date = new Date(value);
-  return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate() + 1}`;
-};
-
 function calculateDaysSince(dateString) {
   const today = new Date();
   const writtenDate = new Date(dateString);
 
   const diffInMs = today - writtenDate;
-  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24)) + 1;
 
   return diffInDays;
 }
@@ -52,7 +47,7 @@ function Card({ item, studyId, onRefreshItem }) {
                 의 {item.title}
               </p>
               <span className={styles.term}>
-                {calculateDaysSince(formatData(item.createdAt))}일째 진행 중
+                {calculateDaysSince(item.createdAt)}일째 진행 중
               </span>
             </div>
           </Link>

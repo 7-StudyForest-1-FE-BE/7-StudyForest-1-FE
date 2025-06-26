@@ -1,12 +1,31 @@
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
 
-export const getStudyList = async ({ offset = 0, limit = 6 }) => {
-  const response = await fetch(
-    `${API_URL}/api/studies?offset=${offset}&limit=${limit}`
-  );
-  if (!response.ok) throw new Error("스터디 목록 불러오기 실패");
-  const data = await response.json();
-  return data;
+export const getStudyList = async ({
+  offset = 0,
+  limit = 6,
+  keyword = "",
+  sortKey = "latest",
+}) => {
+  try {
+    const params = new URLSearchParams({
+      offset,
+      limit,
+      keyword,
+      sortKey,
+    });
+
+    const response = await fetch(`${API_URL}/api/studies?${params}`);
+
+    if (!response.ok) {
+      throw new Error(`스터디 목록 불러오기 실패: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("🔥 getStudyList 에러:", error);
+    return [];
+  }
 };
 
 export const getStudyItem = async (studyId) => {
