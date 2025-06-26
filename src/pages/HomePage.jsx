@@ -46,6 +46,9 @@ function HomePage() {
       setItems((prevItems) =>
         prevItems.map((item) => (item._id === studyId ? updated : item))
       );
+      setRecentStudies((prevItems) =>
+        prevItems.map((item) => (item._id === studyId ? updated : item))
+      );
     } catch (err) {
       console.error("🔁 개별 스터디 갱신 실패", err);
     }
