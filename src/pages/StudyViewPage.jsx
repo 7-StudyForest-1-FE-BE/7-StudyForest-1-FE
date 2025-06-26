@@ -7,7 +7,11 @@ import { Link, Navigate, useParams, useNavigate } from "react-router";
 import HabitsTable from "../components/Study/HabitsTable";
 import PasswordModal from "../components/Modal/PasswordModal";
 import EmojiArea from "../components/Emoji/EmojiArea.jsx";
-import { getStudyItem, checkStudyPassword } from "../api/List_DS.js";
+import {
+  getStudyItem,
+  checkStudyPassword,
+  addEmojiReaction,
+} from "../api/List_DS.js";
 import DeleteStudyModal from "../components/Modal/DeleteStudyModal.jsx";
 import { deleteStudy } from "../api/View_JS.js";
 import CustomEmojiPicker from "../components/Emoji/CustomEmojiPicker.jsx";
@@ -92,17 +96,7 @@ function StudyViewPage() {
     }
 
     try {
-      const res = await fetch("http://localhost:3000/api/emojis/add", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          studyId,
-          emoji: safeEmoji,
-          action: "increase", // 항상 처음은 증가
-        }),
-      });
-
-      const result = await res.json();
+      const result = await addEmojiReaction({ studyId, emoji: safeEmoji });
       console.log("✅ 등록 성공:", result);
 
       // 로컬스토리지 업데이트
