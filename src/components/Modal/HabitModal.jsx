@@ -9,6 +9,8 @@ function HabitModal({ isOpen, onClose, habits, setHabits }) {
   const [tempHabits, setTempHabits] = useState(habits);
   const [originalIds, setOriginalIds] = useState([]);
 
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
   useEffect(() => {
     if (isOpen) {
       setTempHabits(
@@ -60,7 +62,7 @@ function HabitModal({ isOpen, onClose, habits, setHabits }) {
       const updateRequests = cleaned
         .filter((h) => h._id)
         .map((h) =>
-          fetch(`http://localhost:3000/api/habits/${h._id}`, {
+          fetch(`${API_URL}/api/habits/${h._id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ title: h.title.trim() }),
@@ -71,7 +73,7 @@ function HabitModal({ isOpen, onClose, habits, setHabits }) {
       const deletedIds = originalIds.filter((id) => !remainingIds.includes(id));
 
       const deleteRequests = deletedIds.map((id) =>
-        fetch(`http://localhost:3000/api/habits/${id}`, {
+        fetch(`${API_URL}/api/habits/${id}`, {
           method: "DELETE",
         })
       );

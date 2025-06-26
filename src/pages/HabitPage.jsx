@@ -11,6 +11,8 @@ function HabitPage() {
   const [studyName, setStudyName] = useState("");
   const { studyId } = useParams();
 
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
   const getTodayDay = () => {
     const days = ["일", "월", "화", "수", "목", "금", "토"];
     return days[new Date().getDay()];
@@ -19,14 +21,11 @@ function HabitPage() {
   const toggleItem = async (habitId) => {
     const day = getTodayDay();
     try {
-      const res = await fetch(
-        `http://localhost:3000/api/habits/${habitId}/toggle`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ day }),
-        }
-      );
+      const res = await fetch(`${API_URL}/api/habits/${habitId}/toggle`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ day }),
+      });
       const updatedHabit = await res.json();
 
       setHabits((prev) =>
@@ -45,9 +44,7 @@ function HabitPage() {
         setHabits(data.filter((h) => h.endDate === null));
 
         // 스터디 상세 정보 API 호출해서 이름 가져오기
-        const studyResponse = await fetch(
-          `http://localhost:3000/api/studies/${studyId}`
-        );
+        const studyResponse = await fetch(`${API_URL}/api/studies/${studyId}`);
         if (!studyResponse.ok) throw new Error("스터디 상세 조회 실패");
         const studyData = await studyResponse.json();
         setStudyName(studyData.title || "");
