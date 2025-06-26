@@ -23,44 +23,61 @@ export const getStudyList = async ({
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("🔥 getStudyList 에러:", error);
+    console.error("getStudyList 에러:", error);
     return [];
   }
 };
 
 export const getStudyItem = async (studyId) => {
-  const response = await fetch(
-    `${API_URL}/api/studies/${studyId}?populateHabits=true`
-  );
-  if (!response.ok) throw new Error("개별 스터디 상세보기 실패");
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch(
+      `${API_URL}/api/studies/${studyId}?populateHabits=true`
+    );
+    if (!response.ok) throw new Error("개별 스터디 상세보기 실패");
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.error("getStudyItem 에러:", err);
+    return [];
+  }
 };
 
 export const checkStudyPassword = async (studyId, password) => {
-  const res = await fetch(`${API_URL}/api/studies/${studyId}/check-password`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ password }),
-  });
-
-  if (!res.ok) {
-    let message = "비밀번호 확인 실패";
-    throw new Error(message);
+  try {
+    const res = await fetch(
+      `${API_URL}/api/studies/${studyId}/check-password`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password }),
+      }
+    );
+    if (!res.ok) {
+      throw new Error("비밀번호 확인 실패");
+    }
+    return await res.json();
+  } catch (err) {
+    console.error("getStudyItem 에러:", err);
+    return [];
   }
-
-  return await res.json();
 };
 
 export const getRecentStudies = async (ids) => {
-  const res = await fetch(`${API_URL}/api/studies/recent`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ids }),
-  });
-  return res.json();
+  try {
+    const res = await fetch(`${API_URL}/api/studies/recent`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ids }),
+    });
+    if (!res.ok)
+      throw new Error(`최근 조회한 스터디 불러오기 실패: ${res.status}`);
+    return await res.json();
+  } catch (err) {
+    console.error("getRecentStudies 에러:", err);
+    return [];
+  }
 };
 
 export const getStudyHabits = async (studyId) => {
