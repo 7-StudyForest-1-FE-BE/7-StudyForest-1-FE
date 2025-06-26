@@ -24,20 +24,28 @@ function HomePage() {
   const [inputValue, setInputValue] = useState("");
   const [keyword, setKeyword] = useState("");
 
-  const handleFetch = async () => {
+  const handleFetch = async (isNew = false, forcedKeyword, forcedSortKey) => {
     try {
-      const studyList = await getStudyList({ offset, limit });
-      console.log("📦 받은 studyList.length:", studyList.length); // ← 이거 확인
-      console.log("🔢 현재 offset:", offset);
-      setItems((prev) => [...prev, ...studyList]);
+      const nextOffset = isNew ? 0 : offset;
+
+      const studyList = await getStudyList({
+        offset: nextOffset,
+        limit,
+        keyword: forcedKeyword !== undefined ? forcedKeyword : keyword,
+        sortKey: forcedSortKey !== undefined ? forcedSortKey : sortOption.key,
+      });
+
+      setItems((prev) => (isNew ? studyList : [...prev, ...studyList]));
 
       if (studyList.length < limit) {
         setHasMore(false);
+      } else {
+        setHasMore(true);
       }
-      // 현재까지 얼마나 받아왔는지
-      setOffset((prev) => prev + limit);
+
+      setOffset(nextOffset + limit);
     } catch (error) {
-      console.error(error);
+      console.error("스터디 목록 불러오기 실패:", error);
     }
   };
   const refreshStudyItem = async (studyId) => {
@@ -53,31 +61,14 @@ function HomePage() {
       console.error("🔁 개별 스터디 갱신 실패", err);
     }
   };
-  const filteredItems = useMemo(() => {
-    return items.filter((item) =>
-      item.title.toLowerCase().includes(keyword.toLowerCase())
-    );
-  }, [items, keyword]);
-  const sortedItems = useMemo(() => {
-    return [...filteredItems].sort((a, b) => {
-      switch (sortOption.key) {
-        case "latest":
-          return new Date(b.createdAt) - new Date(a.createdAt);
-        case "oldest":
-          return new Date(a.createdAt) - new Date(b.createdAt);
-        case "higher":
-          return b.points - a.points;
-        case "lower":
-          return a.points - b.points;
-        default:
-          return 0;
-      }
-    });
-  }, [filteredItems, sortOption]);
 
-  const handleFiter = (key, label) => {
+  const handleFilter = (key, label) => {
     setSortOption({ key, label });
     setOpen(false);
+    setOffset(0);
+    setHasMore(true);
+    setItems([]);
+    handleFetch(true, undefined, key);
   };
 
   const handleOpen = () => {
@@ -87,8 +78,21 @@ function HomePage() {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     setKeyword(inputValue);
+    setSortOption({ key: "latest", label: "최신순" });
+    setOffset(0);
+    setHasMore(true);
+    setItems([]);
+    handleFetch(true, inputValue);
   };
   const isFetchedRef = useRef(false);
+
+  useEffect(() => {
+    setOffset(0);
+    setHasMore(true);
+    setItems([]);
+    handleFetch(true);
+  }, [keyword, sortOption]);
+
   useEffect(() => {
     const fetchAll = async () => {
       if (!isFetchedRef.current) {
@@ -98,12 +102,10 @@ function HomePage() {
 
       const recentIds =
         JSON.parse(localStorage.getItem("recentStudyIds")) || [];
-      console.log("📦 최근 IDs 불러옴:", recentIds);
       if (recentIds.length === 0) return;
 
       try {
         const studies = await getRecentStudies(recentIds);
-        console.log("📬 서버 응답:", studies);
         const sorted = recentIds
           .map((id) => studies.find((study) => study._id === id))
           .filter(Boolean);
@@ -176,7 +178,7 @@ function HomePage() {
                     <button
                       type="button"
                       className={styles.btn__option}
-                      onClick={() => handleFiter("latest", "최신 순")}
+                      onClick={() => handleFilter("latest", "최신 순")}
                     >
                       최신순
                     </button>
@@ -185,7 +187,7 @@ function HomePage() {
                     <button
                       type="button"
                       className={styles.btn__option}
-                      onClick={() => handleFiter("oldest", "오래된 순")}
+                      onClick={() => handleFilter("oldest", "오래된 순")}
                     >
                       오래된 순
                     </button>
@@ -194,7 +196,7 @@ function HomePage() {
                     <button
                       type="button"
                       className={styles.btn__option}
-                      onClick={() => handleFiter("higher", "많은 포인트 순")}
+                      onClick={() => handleFilter("higher", "많은 포인트 순")}
                     >
                       많은 포인트 순
                     </button>
@@ -203,7 +205,7 @@ function HomePage() {
                     <button
                       type="button"
                       className={styles.btn__option}
-                      onClick={() => handleFiter("lower", "적은 포인트 순")}
+                      onClick={() => handleFilter("lower", "적은 포인트 순")}
                     >
                       적은 포인트 순
                     </button>
@@ -215,7 +217,7 @@ function HomePage() {
         </div>
         <div className={styles.content__area}>
           <CardList
-            items={sortedItems}
+            items={items}
             className={`${styles.card__list} ${styles.entire__card__list}`}
             onRefreshItem={refreshStudyItem}
           />
@@ -224,7 +226,7 @@ function HomePage() {
               <button
                 type="button"
                 className={`${styles.btn__more} primary`}
-                onClick={handleFetch}
+                onClick={() => handleFetch()}
               >
                 더보기
               </button>
