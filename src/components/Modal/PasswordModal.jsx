@@ -5,9 +5,15 @@ import { useState } from "react";
 
 function PasswordModal({ title, onConfirm, onClose }) {
   const [inputPw, setInputPw] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
+
   const handleClose = () => {
     onClose();
     setInputPw("");
+  };
+
+  const handleToggleVisibility = () => {
+    setIsVisible((prev) => !prev);
   };
 
   return (
@@ -33,7 +39,7 @@ function PasswordModal({ title, onConfirm, onClose }) {
                 <dd className="">
                   <div className="input__box">
                     <input
-                      type="password"
+                      type={isVisible ? "text" : "password"}
                       id="password"
                       name="password"
                       value={inputPw}
@@ -41,8 +47,12 @@ function PasswordModal({ title, onConfirm, onClose }) {
                       placeholder="비밀번호를 입력해주세요"
                       autoComplete="off"
                     />
-                    <button type="button" className="btn__visible">
-                      <img src={visibilityOff} />
+                    <button
+                      type="button"
+                      className="btn__visible"
+                      onClick={handleToggleVisibility}
+                    >
+                      <img src={isVisible ? visibilityOn : visibilityOff} />
                     </button>
                   </div>
                 </dd>
