@@ -1,6 +1,8 @@
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
 export const getStudyList = async ({ offset = 0, limit = 6 }) => {
   const response = await fetch(
-    `http://localhost:3000/api/studies?offset=${offset}&limit=${limit}`
+    `${API_URL}/api/studies?offset=${offset}&limit=${limit}`
   );
   if (!response.ok) throw new Error("스터디 목록 불러오기 실패");
   const data = await response.json();
@@ -9,7 +11,7 @@ export const getStudyList = async ({ offset = 0, limit = 6 }) => {
 
 export const getStudyItem = async (studyId) => {
   const response = await fetch(
-    `http://localhost:3000/api/studies/${studyId}?populateHabits=true`
+    `${API_URL}/api/studies/${studyId}?populateHabits=true`
   );
   if (!response.ok) throw new Error("개별 스터디 상세보기 실패");
   const data = await response.json();
@@ -17,16 +19,13 @@ export const getStudyItem = async (studyId) => {
 };
 
 export const checkStudyPassword = async (studyId, password) => {
-  const res = await fetch(
-    `http://localhost:3000/api/studies/${studyId}/check-password`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ password }),
-    }
-  );
+  const res = await fetch(`${API_URL}/api/studies/${studyId}/check-password`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ password }),
+  });
 
   if (!res.ok) {
     let message = "비밀번호 확인 실패";
@@ -37,7 +36,7 @@ export const checkStudyPassword = async (studyId, password) => {
 };
 
 export const getRecentStudies = async (ids) => {
-  const res = await fetch("http://localhost:3000/api/studies/recent", {
+  const res = await fetch(`${API_URL}/api/studies/recent`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ ids }),
@@ -47,11 +46,59 @@ export const getRecentStudies = async (ids) => {
 
 export const getStudyHabits = async (studyId) => {
   const response = await fetch(
-    `http://localhost:3000/api/studies/${studyId}?populateHabits=true`
+    `${API_URL}/api/studies/${studyId}?populateHabits=true`
   );
   if (!response.ok) throw new Error("스터디 습관 불러오기 실패");
 
   const data = await response.json();
 
   return data.habits;
+};
+
+export const addEmojiReaction = async ({ studyId, emoji }) => {
+  try {
+    const res = await fetch(`${API_URL}/api/emojis/add`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        studyId,
+        emoji,
+        action: "increase",
+      }),
+    });
+
+    if (!res.ok) {
+      throw new Error("이모지 추가 실패");
+    }
+
+    const result = await res.json();
+    return result;
+  } catch (error) {
+    console.error("addEmojiReaction 에러:", error);
+    throw error;
+  }
+};
+
+export const toggleEmojiReaction = async ({ studyId, emoji, action }) => {
+  try {
+    const res = await fetch(`${API_URL}/api/emojis/react`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        studyId,
+        emoji,
+        action, // "increase" 또는 "decrease"
+      }),
+    });
+
+    if (!res.ok) {
+      throw new Error("이모지 반응 처리 실패");
+    }
+
+    const result = await res.json();
+    return result;
+  } catch (error) {
+    console.error("toggleEmojiReaction 에러:", error);
+    throw error;
+  }
 };
