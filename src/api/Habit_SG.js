@@ -1,7 +1,9 @@
+const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
+
 // 습관 조회
 export async function getTodayHabits(studyId, password) {
   try {
-    const response = await fetch("http://localhost:3000/api/habits/today", {
+    const response = await fetch(`${API_URL}/api/habits/today`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -21,15 +23,17 @@ export async function getTodayHabits(studyId, password) {
   }
 }
 
-// 습관 저장 함수
+// 습관 저장
 export async function saveTodayHabits(studyId, newTitles) {
   try {
-    // 아마 이 부분에서 newHabits 변수를 쓰고 있을 텐데, 선언이 안 됐거나 오타가 있을 수 있음
-    const response = await fetch(`/api/habits/study/${studyId}/habits`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ habits: newTitles }),
-    });
+    const response = await fetch(
+      `${API_URL}/api/habits/study/${studyId}/habits`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ habits: newTitles }),
+      }
+    );
 
     if (!response.ok) {
       throw new Error("습관 저장 실패");
@@ -43,9 +47,10 @@ export async function saveTodayHabits(studyId, newTitles) {
   }
 }
 
+// 습관 목록 불러오기
 export async function getStudyHabits(studyId) {
   try {
-    const response = await fetch(`/api/habits/study/${studyId}`);
+    const response = await fetch(`${API_URL}/api/habits/study/${studyId}`);
     if (!response.ok) {
       throw new Error("습관 정보를 가져오는 데 실패했습니다.");
     }
