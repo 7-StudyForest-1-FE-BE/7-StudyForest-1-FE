@@ -168,7 +168,7 @@
   border-radius: 12px;
   color: #578246;
   white-space: nowrap;
-  z-index: 15;
+  z-index: 99999;
 }
 .toast__err {
   background: #fde0e9;
