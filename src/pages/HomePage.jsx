@@ -135,7 +135,7 @@ function HomePage() {
           </div>
         </article>
       ) : (
-        <p>최근 조회한 스터디가 없습니다.</p>
+        ""
       )}
       <article className={styles.block__card}>
         <div className={styles.title__area}>
