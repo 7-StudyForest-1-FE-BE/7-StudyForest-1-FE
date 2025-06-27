@@ -58,9 +58,9 @@ export const checkStudyPassword = async (studyId, password) => {
       throw new Error("비밀번호 확인 실패");
     }
     return await res.json();
-  } catch (err) {
-    console.error("getStudyItem 에러:", err);
-    return [];
+  } catch (error) {
+    console.error("checkStudyPassword 에러:", error);
+    throw error;
   }
 };
 
