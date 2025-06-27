@@ -6,6 +6,7 @@ import PasswordField from '../components/Registation/passwordField';
 import BackgroundSelector from '../components/Registation/BackgroundSelector';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import UpdateSuccessModal from '../components/Modal/UpdateSuccessModal';
 
 const MIN_PASSWORD_LENGTH = 4;
 // const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).*$/;
@@ -112,6 +113,8 @@ function StudyEditPage() {
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isFormValid) {
@@ -138,12 +141,16 @@ function StudyEditPage() {
         throw new Error(errorData.message || '서버 오류');
       }
       const result = await res.json();
-      alert('스터디가 수정되었습니다!');
-      // console.log(result);
-      navigate(`/view/${result._id}`);
+      setShowUpdateModal(true);
+      // navigate(`/view/${result._id}`);
     } catch (err) {
       alert('스터디 생성 실패: ' + err.message);
     }
+  };
+
+  const handleCloseModal = () => {
+    setShowUpdateModal(false);
+    navigate(`/view/${id}`);
   };
 
   useEffect(() => {
@@ -248,6 +255,7 @@ function StudyEditPage() {
           </button>
         </div>
       </form>
+      {showUpdateModal && <UpdateSuccessModal onConfirm={handleCloseModal} />}
     </div>
   );
 }
