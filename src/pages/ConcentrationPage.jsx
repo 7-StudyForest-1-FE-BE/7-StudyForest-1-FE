@@ -30,6 +30,7 @@ function ConcentrationPage() {
   const [showExitModal, setShowExitModal] = useState(false);
   const [pendingNavigation, setPendingNavigation] = useState(null);
   const intervalRef = useRef(null);
+  const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
 
   // 스터디 정보 로드
   useEffect(() => {
@@ -130,7 +131,7 @@ function ConcentrationPage() {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/timers`, {
+      const response = await fetch(`${API_URL}/api/timers`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
