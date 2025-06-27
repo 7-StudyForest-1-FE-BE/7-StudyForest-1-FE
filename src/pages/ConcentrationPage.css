@@ -121,7 +121,6 @@
 
 .point__text {
   display: flex;
-  width: 80px;
   height: 31px;
   justify-content: flex-start;
   align-items: center;
