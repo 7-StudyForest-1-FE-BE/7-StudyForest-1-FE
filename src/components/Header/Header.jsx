@@ -4,8 +4,7 @@ import { Link, useLocation } from "react-router";
 
 function Header() {
   const location = useLocation();
-  const hideButtonPaths = ["/view", "/habit", "/concentration"];
-  const hideButton = hideButtonPaths.includes(location.pathname);
+  const isHome = location.pathname === "" || location.pathname === "/";
 
   return (
     <header className={styles.header}>
@@ -19,12 +18,14 @@ function Header() {
           </h1>
         </div>
         <div className={styles.util}>
-          <Link
-            to={"/registration"}
-            className={`${styles.btn} hide__on__mobile`}
-          >
-            스터디 만들기
-          </Link>
+          {isHome && (
+            <Link
+              to={"/registration"}
+              className={`${styles.btn} hide__on__mobile`}
+            >
+              스터디 만들기
+            </Link>
+          )}
         </div>
       </div>
     </header>
